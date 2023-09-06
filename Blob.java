@@ -35,4 +35,9 @@ public class Blob
         writer.close ();
         out.close ();
     }
+
+    public String getSHA1String ()
+    {
+        return SHA1;
+    }
 }
