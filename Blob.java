@@ -11,25 +11,31 @@ import java.util.Scanner;
 
 public class Blob
 {
+    private String inputFilePath;
     private String myString;
 
-    public void blobify (String inputFileName, String objectsPath) throws NoSuchAlgorithmException, IOException
+    public Blob (String inputFilePath)
+    {
+        this.inputFilePath = inputFilePath;
+    }
+
+    public void blobify (String objectsPath) throws NoSuchAlgorithmException, IOException
     {
         //writes new file into objects folder
-        FileWriter writer = new FileWriter (new File (objectsPath + "/" + getSHA1String(inputFileName)));
+        FileWriter writer = new FileWriter (new File (objectsPath + "/" + getSHA1String()));
         PrintWriter out = new PrintWriter(writer);
         out.println (myString);
         writer.close ();
         out.close ();
     }
 
-    public String getSHA1String (String inputFileName) throws FileNotFoundException, UnsupportedEncodingException, NoSuchAlgorithmException
+    public String getSHA1String () throws FileNotFoundException, UnsupportedEncodingException, NoSuchAlgorithmException
     {
         //reads file into String myString
-        Scanner scanner = new Scanner(new File(inputFileName));
+        Scanner scanner = new Scanner(new File(inputFilePath));
         myString = scanner.useDelimiter("\\A").next();
         scanner.close();
-        //hashes file with SHA1 hash code into String called SHA1)
+        //hashes file with SHA1 hash code into String called SHA1
         MessageDigest crypt = MessageDigest.getInstance("SHA-1");
         crypt.reset();
         crypt.update(myString.getBytes("UTF-8"));
