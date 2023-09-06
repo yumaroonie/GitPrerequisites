@@ -10,6 +10,6 @@ public class GitPrereqsTester
 
         Blob myBlob = new Blob ();
         myBlob.blobify ("/Users/chrisheadley/Desktop/Comp Sci/GitPrerequisites/ToBeBlobbed.txt","/Users/chrisheadley/Desktop/Comp Sci/GitPrerequisites/objects");
-        System.out.println (myBlob.getSHA1String());
+        System.out.println (myBlob.getSHA1String("/Users/chrisheadley/Desktop/Comp Sci/GitPrerequisites/ToBeBlobbed.txt"));
     }
 }
