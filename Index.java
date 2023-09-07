@@ -25,7 +25,7 @@ public class Index
     {
         initialized = true;
         this.pathName = pathName;
-        pathToIndexString = pathName + "/index.txt";
+        pathToIndexString = pathName + "/index";
         pathToObjectsString = pathName + "/objects";
         Path indexPath = Paths.get (pathToIndexString);
         Path objectsPath = Paths.get (pathToObjectsString);
@@ -53,7 +53,7 @@ public class Index
         Blob addBlob = new Blob (pathName + "/" + fileName);
         addBlob.blobify (pathToObjectsString);
         nameAndSHAMap.put (fileName,addBlob.getSHA1String ());
-        updateIndexTxt ();
+        updateIndex ();
     }
     
     public void remove (String fileName) throws Exception
@@ -76,10 +76,10 @@ public class Index
         nameAndSHAMap.remove (fileName);
         File file = new File(pathToObjectsString + "/" + SHAToRemove);
         file.delete();
-        updateIndexTxt();
+        updateIndex();
     }
 
-    public void updateIndexTxt () throws IOException
+    public void updateIndex () throws IOException
     {
         FileWriter writer = new FileWriter(pathToIndexString,false);
         PrintWriter out = new PrintWriter(writer);
