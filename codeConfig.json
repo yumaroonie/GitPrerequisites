@@ -1,0 +1,57 @@
+[
+    {
+        "className": "Index",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "initialize",
+                "parameters": ["String"],
+                "values": ["__TEST_FILE_NAME__"]
+            },
+            {
+                "methodName": "add",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "__TEST_FILE_NAME__"
+                ]
+            },
+            {
+                "methodName": "remove",
+                "parameters": ["String"],
+                "values": ["__TEST_FILE_NAME__"]
+            },
+            {
+                "methodName": "updateIndex",
+                "parameters": [],
+                "values": []
+            }
+        ]
+    },
+    {
+        "className": "Blob",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [
+                    "String"
+                ],
+                "values": [
+                    "__TEST_FILE_NAME__"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "getSha1",
+                "parameters": [],
+                "values": []
+            }
+        ]
+    }
+]
