@@ -11,7 +11,7 @@
             {
                 "methodName": "initialize",
                 "parameters": ["String"],
-                "values": ["__TEST_FILE_NAME__"]
+                "values": ["pathName"]
             },
             {
                 "methodName": "add",
@@ -19,13 +19,13 @@
                     "String"
                 ],
                 "values": [
-                    "__TEST_FILE_NAME__"
+                    "fileName"
                 ]
             },
             {
                 "methodName": "remove",
                 "parameters": ["String"],
-                "values": ["__TEST_FILE_NAME__"]
+                "values": ["fileName"]
             },
             {
                 "methodName": "updateIndex",
@@ -42,13 +42,18 @@
                     "String"
                 ],
                 "values": [
-                    "__TEST_FILE_NAME__"
+                    "inputFilePath"
                 ]
             }
         ],
         "methodConfigs": [
             {
-                "methodName": "getSha1",
+                "methodName": "blobify",
+                "parameters": ["String"],
+                "values": ["objectsPath"]
+            },
+            {
+                "methodName": "getSHA1String",
                 "parameters": [],
                 "values": []
             }
