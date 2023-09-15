@@ -15,6 +15,7 @@ public class ExampleTester {
 
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
+        
         /*
          * Utils.writeStringToFile("junit_example_file_data.txt", "test file contents");
          * Utils.deleteFile("index");
