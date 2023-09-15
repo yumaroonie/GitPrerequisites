@@ -16,31 +16,25 @@ public class Index
     private HashMap <String, String> nameAndSHAMap;
 
     public Index ()
-    {
+    {   
         initialized = false;
         nameAndSHAMap = new HashMap <String, String> ();
     }
 
     public void initialize (String pathName) throws IOException
     {
+        File objects = new File("./objects");
+        if (!objects.exists())
+            objects.mkdirs();
+
+        File index = new File("index");
+        if (!index.exists())
+            index.createNewFile();
+
         initialized = true;
         this.pathName = pathName;
         pathToIndexString = pathName + "/index";
         pathToObjectsString = pathName + "/objects";
-        Path indexPath = Paths.get (pathToIndexString);
-        Path objectsPath = Paths.get (pathToObjectsString);
-        if (Files.notExists (indexPath));
-        {
-            File indexFile = new File (pathToIndexString);
-            indexFile.createNewFile();
-        }
-        if (Files.notExists (objectsPath));
-        {
-            File objectsDir = new File (pathToObjectsString);
-            if (!objectsDir.exists()){
-                objectsDir.mkdirs();
-            }
-        }
     }
 
     public void add (String fileName) throws Exception
