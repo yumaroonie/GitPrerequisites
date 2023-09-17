@@ -23,11 +23,11 @@ public class Index
 
     public void initialize (String pathName) throws IOException
     {
-        File objects = new File("./objects");
+        File objects = new File(pathName + "/objects");
         if (!objects.exists())
             objects.mkdirs();
 
-        File index = new File("index");
+        File index = new File(pathName + "/index");
         if (!index.exists())
             index.createNewFile();
 

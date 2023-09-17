@@ -11,7 +11,7 @@
             {
                 "methodName": "initialize",
                 "parameters": ["String"],
-                "values": ["pathName"]
+                "values": ["foobar.txt"]
             },
             {
                 "methodName": "add",
@@ -19,13 +19,13 @@
                     "String"
                 ],
                 "values": [
-                    "fileName"
+                    "foobar.txt"
                 ]
             },
             {
                 "methodName": "remove",
                 "parameters": ["String"],
-                "values": ["fileName"]
+                "values": ["foobar.txt"]
             },
             {
                 "methodName": "updateIndex",
@@ -42,7 +42,7 @@
                     "String"
                 ],
                 "values": [
-                    "inputFilePath"
+                    "foobar.txt"
                 ]
             }
         ],
@@ -50,7 +50,7 @@
             {
                 "methodName": "blobify",
                 "parameters": ["String"],
-                "values": ["objectsPath"]
+                "values": ["foobar.txt"]
             },
             {
                 "methodName": "getSHA1String",

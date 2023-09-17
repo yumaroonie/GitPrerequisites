@@ -14,7 +14,7 @@ public class Blob
     private String inputFilePath;
     private String myString;
 
-    public Blob (String inputFilePath)
+    public Blob (String inputFilePath) throws Exception
     {
         this.inputFilePath = inputFilePath;
     }
@@ -24,7 +24,8 @@ public class Blob
         //writes new file into objects folder
         FileWriter writer = new FileWriter (new File (objectsPath + "/" + getSHA1String()));
         PrintWriter out = new PrintWriter(writer);
-        out.println (myString);
+
+        out.print (myString);
         writer.close ();
         out.close ();
     }
