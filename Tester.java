@@ -106,8 +106,8 @@ public class Tester {
 
     public void createTestFile() throws Exception {
 
-            Path pathObject = Paths.get(projPath + "/testfile.txt");
-            Files.createFile(pathObject);
+        Path pathObject = Paths.get(projPath + "/testfile.txt");
+        Files.createFile(pathObject);
 
         FileWriter writer = new FileWriter(projPath + "/testfile.txt");
         writer.write(fileContents);

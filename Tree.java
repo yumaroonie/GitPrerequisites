@@ -67,6 +67,10 @@ public class Tree {
     
     }
 
+    public String getEntries() {
+        return entries.toString();
+    }
+
     public String getSHA1fromString (String myString) throws Exception {
         //hashes file with SHA1 hash code into String called SHA1
         MessageDigest crypt = MessageDigest.getInstance("SHA-1");
