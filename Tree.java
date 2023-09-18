@@ -11,11 +11,12 @@ import java.util.List;
 public class Tree {
 
     StringBuilder entries;
+    static String projPath = "/Users/ryancheng/p/Honors Topics/GitPrerequisites";
 
     public Tree() {
 
         entries = new StringBuilder();
-        File objects = new File("./objects");
+        File objects = new File(projPath + "/objects");
         if (!objects.exists())
             objects.mkdirs();
 
@@ -56,10 +57,10 @@ public class Tree {
         }
     }
 
-    public void writeToFile () throws Exception {
+    public void writeToFile() throws Exception {
         
         String hash = getSHA1fromString(entries.toString());
-        PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter("./objects" + hash)));
+        PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter(projPath + "/objects/" + hash)));
 
         printWriter.print(entries.toString());
 

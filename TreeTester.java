@@ -57,6 +57,25 @@ public class TreeTester {
         assertTrue(tree.getEntries().contains(treeEntry));
     }
 
+    @Test
+    void testWriteToFile() throws Exception {
+
+        Tree tree = new Tree();
+
+        String blobEntry = "blob : 380ae8e935d67d48591fccd7bcfa00a55b23cf52 : testfile.txt";
+        String treeEntry = "tree : d5db5d8200a57fe7d026472b40e65efe2887bd63";
+
+        tree.add(blobEntry);
+        tree.add(treeEntry);
+        tree.writeToFile();
+
+        String hash = getSha1(tree.getEntries());
+        File treeFile = new File(projPath + "/objects/" + hash);
+        String str = Files.readString(Path.of(projPath + "/objects/" + hash));
+        assertTrue(treeFile.exists());
+        assertTrue(str.equals(tree.getEntries()));
+    }
+
     public void createTestFile() throws Exception {
 
         Path pathObject = Paths.get(projPath + "/testfile.txt");
@@ -77,5 +96,18 @@ public class TreeTester {
             currentFile.delete();
         }
         Files.delete(Paths.get(projPath + "/objects"));
+    }
+
+    public String getSha1(String input) throws Exception {
+        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+        crypt.reset();
+        crypt.update(input.getBytes("UTF-8"));
+        Formatter formatter = new Formatter();
+        for (byte b : crypt.digest()) {
+            formatter.format("%02x", b);
+        }
+        String SHA1 = formatter.toString();
+        formatter.close();
+        return SHA1;
     }
 }
