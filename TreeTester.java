@@ -53,10 +53,10 @@ public class TreeTester {
         tree.add(treeEntry);
 
         tree.remove("testfile.txt");
-        assertTrue("Tree entry was not removed.", tree.getEntries().contains(blobEntry));
+        assertFalse("Tree entry was not removed.", tree.getEntries().contains(blobEntry));
 
         tree.remove("d5db5d8200a57fe7d026472b40e65efe2887bd63");
-        assertTrue("Tree entry was not removed.", tree.getEntries().contains(treeEntry));
+        assertFalse("Tree entry was not removed.", tree.getEntries().contains(treeEntry));
     }
 
     @Test

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Formatter;
 import java.util.List;
+import java.util.Scanner;
 
 public class Tree {
 
@@ -39,47 +40,48 @@ public class Tree {
 
     public void remove(String components) throws Exception {
 
-        if (entries.toString().contains(components)) {
+        String str = entries.toString();
+        StringBuilder afterRemove = new StringBuilder();
 
-            List<String> lines = new ArrayList<>(Arrays.asList(entries.toString().split("\n")));
-            lines.remove(components);
-            entries.setLength(0); 
+        Scanner scanner = new Scanner(str);
 
-            for (int i = 0; i < lines.size(); i++) {
+        while (scanner.hasNextLine()) {
 
-                entries.append(lines.get(i));
+            String line = scanner.nextLine();
 
-                if (i != lines.size() - 1) {
-                    entries.append("\n");
-                }
-
+            if (!line.contains(components)) {
+                afterRemove.append(line);
             }
         }
+
+        scanner.close();
+
+        entries = afterRemove;
+        
     }
 
     public void writeToFile() throws Exception {
-        
+
         String hash = getSHA1fromString(entries.toString());
         PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter(projPath + "/objects/" + hash)));
 
         printWriter.print(entries.toString());
 
         printWriter.close();
-    
+
     }
 
     public String getEntries() {
         return entries.toString();
     }
 
-    public String getSHA1fromString (String myString) throws Exception {
-        //hashes file with SHA1 hash code into String called SHA1
+    public String getSHA1fromString(String myString) throws Exception {
+        // hashes file with SHA1 hash code into String called SHA1
         MessageDigest crypt = MessageDigest.getInstance("SHA-1");
         crypt.reset();
         crypt.update(myString.getBytes("UTF-8"));
         Formatter formatter = new Formatter();
-        for (byte b : crypt.digest())
-        {
+        for (byte b : crypt.digest()) {
             formatter.format("%02x", b);
         }
         String SHA1 = formatter.toString();
