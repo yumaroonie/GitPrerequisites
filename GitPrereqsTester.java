@@ -4,7 +4,7 @@ public class GitPrereqsTester
     {
         //tests initialize
         Index myIndex = new Index ();
-        myIndex.initialize ("/Users/chrisheadley/Desktop/Comp Sci/GitPrerequisites");
+        myIndex.initialize ("/Users/ryancheng/p/Honors Topics/GitPrerequisites");
 
         //tests blobify, printing sha1 of file contents
         //Blob myBlob = new Blob ("/Users/chrisheadley/Desktop/Comp Sci/GitPrerequisites/ToBeBlobbed.txt");
@@ -16,5 +16,7 @@ public class GitPrereqsTester
         myIndex.add ("bar.txt");
         myIndex.add ("bar.txt");
         myIndex.remove("foobar.txt");
+
+        Blob blobTest = new Blob("testfile.txt");
     }
 }

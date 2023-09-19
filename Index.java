@@ -16,31 +16,25 @@ public class Index
     private HashMap <String, String> nameAndSHAMap;
 
     public Index ()
-    {
+    {   
         initialized = false;
         nameAndSHAMap = new HashMap <String, String> ();
     }
 
     public void initialize (String pathName) throws IOException
     {
+        File objects = new File(pathName + "/objects");
+        if (!objects.exists())
+            objects.mkdirs();
+
+        File index = new File(pathName + "/index");
+        if (!index.exists())
+            index.createNewFile();
+
         initialized = true;
         this.pathName = pathName;
         pathToIndexString = pathName + "/index";
         pathToObjectsString = pathName + "/objects";
-        Path indexPath = Paths.get (pathToIndexString);
-        Path objectsPath = Paths.get (pathToObjectsString);
-        if (Files.notExists (indexPath));
-        {
-            File indexFile = new File (pathToIndexString);
-            indexFile.createNewFile();
-        }
-        if (Files.notExists (objectsPath));
-        {
-            File objectsDir = new File (pathToObjectsString);
-            if (!objectsDir.exists()){
-                objectsDir.mkdirs();
-            }
-        }
     }
 
     public void add (String fileName) throws Exception
@@ -50,8 +44,7 @@ public class Index
             throw new Exception ("Project must be initialized before adding a Blob");
         }
         //creating Blob, updating hash map
-        Blob addBlob = new Blob (pathName + "/" + fileName);
-        addBlob.blobify (pathToObjectsString);
+        Blob addBlob = new Blob (pathName + "/" + fileName, pathName);
         nameAndSHAMap.put (fileName,addBlob.getSHA1String ());
         updateIndex ();
     }
@@ -66,7 +59,7 @@ public class Index
         {
             throw new Exception ("Cannot remove a Blob that was never added");
         }
-        Blob removeBlob = new Blob (pathName + "/" + fileName);
+        Blob removeBlob = new Blob (pathName + "/" + fileName, pathName);
         String SHAToRemove = removeBlob.getSHA1String();
         Path fileNamePath = Paths.get (pathToObjectsString + "/" + SHAToRemove);
         if (Files.notExists (fileNamePath))
@@ -75,7 +68,9 @@ public class Index
         }
         nameAndSHAMap.remove (fileName);
         File file = new File(pathToObjectsString + "/" + SHAToRemove);
-        file.delete();
+        while (file.exists()) {
+            file.delete();
+        }
         updateIndex();
     }
 

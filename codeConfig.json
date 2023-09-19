@@ -1,0 +1,62 @@
+[
+    {
+        "className": "Index",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "initialize",
+                "parameters": ["String"],
+                "values": ["foobar.txt"]
+            },
+            {
+                "methodName": "add",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "foobar.txt"
+                ]
+            },
+            {
+                "methodName": "remove",
+                "parameters": ["String"],
+                "values": ["foobar.txt"]
+            },
+            {
+                "methodName": "updateIndex",
+                "parameters": [],
+                "values": []
+            }
+        ]
+    },
+    {
+        "className": "Blob",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [
+                    "String"
+                ],
+                "values": [
+                    "foobar.txt"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "blobify",
+                "parameters": ["String"],
+                "values": ["foobar.txt"]
+            },
+            {
+                "methodName": "getSHA1String",
+                "parameters": [],
+                "values": []
+            }
+        ]
+    }
+]
