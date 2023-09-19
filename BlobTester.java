@@ -34,6 +34,20 @@ public class BlobTester {
 
     }
 
+    @Test
+    @DisplayName("tests the hash function")
+    public void testBlobHash() throws Exception {
+        createTestFile();
+
+        Blob blob = new Blob(projPath + "/testfile.txt", projPath);
+        File blobFile = new File(projPath + "/objects/" + getSha1(fileContents));
+        assertTrue(blobFile.exists());
+        assertEquals(fileContents, Files.readString(Path.of(projPath + "/objects/" + getSha1(fileContents))));
+
+        assertEquals("Sha is incorrect.", blob.getSHA1String(), getSha1(fileContents));
+        deleteStuff();
+    }
+
     private void deleteStuff() throws IOException {
 
         File index = new File(projPath + "/index");
