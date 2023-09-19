@@ -14,9 +14,16 @@ public class Blob
     private String inputFilePath;
     private String myString;
 
-    public Blob (String inputFilePath) throws Exception
+    public Blob (String inputFilePath, String pathName) throws Exception
     {
+        
+        File objects = new File(pathName + "/objects");
+        if (!objects.exists())
+            objects.mkdirs();
+        
         this.inputFilePath = inputFilePath;
+        blobify(pathName + "/objects");
+
     }
 
     public void blobify (String objectsPath) throws NoSuchAlgorithmException, IOException

@@ -21,23 +21,24 @@ public class BlobTester {
     static File testfile = new File("testfile.txt");
 
     @Test
+    @DisplayName("tests creating a blob")
     public void testCreateBlob() throws Exception {
 
         createTestFile();
 
-        Index index = new Index();
-        index.initialize(projPath);
-        index.add("testfile.txt");
+        Blob blob = new Blob(projPath + "/testfile.txt", projPath);
         File blobFile = new File(projPath + "/objects/" + getSha1(fileContents));
         assertTrue(blobFile.exists());
-
         assertEquals(fileContents, Files.readString(Path.of(projPath + "/objects/" + getSha1(fileContents))));
-
         deleteStuff();
+
     }
 
     private void deleteStuff() throws IOException {
-        Files.delete(Paths.get(projPath + "/index"));
+
+        File index = new File(projPath + "/index");
+        if (!index.exists())
+            index.delete();
         Files.delete(Paths.get(projPath + "/testfile.txt"));
         File objectsFolder = new File(projPath + "/objects/");
         String[] entries = objectsFolder.list();

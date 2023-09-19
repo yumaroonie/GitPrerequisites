@@ -28,6 +28,7 @@ public class TreeTester {
     static File testfile = new File("testfile.txt");
 
     @Test
+    @DisplayName("Tests adding entries to the trees")
     void testAdd() throws Exception {
 
         Tree tree = new Tree();
@@ -37,10 +38,11 @@ public class TreeTester {
         tree.add(blobEntry);
         tree.add(treeEntry);
 
-        assertTrue(tree.getEntries().contains(blobEntry) && tree.getEntries().contains(treeEntry));
+        assertTrue("Tree entries were not added.", tree.getEntries().contains(blobEntry) && tree.getEntries().contains(treeEntry));
     }
 
     @Test
+    @DisplayName("tests removing entries from the tree")
     void testRemove() throws Exception {
 
         Tree tree = new Tree();
@@ -51,13 +53,14 @@ public class TreeTester {
         tree.add(treeEntry);
 
         tree.remove("testfile.txt");
-        assertTrue(tree.getEntries().contains(blobEntry));
+        assertTrue("Tree entry was not removed.", tree.getEntries().contains(blobEntry));
 
         tree.remove("d5db5d8200a57fe7d026472b40e65efe2887bd63");
-        assertTrue(tree.getEntries().contains(treeEntry));
+        assertTrue("Tree entry was not removed.", tree.getEntries().contains(treeEntry));
     }
 
     @Test
+    @DisplayName("tests the write to file method")
     void testWriteToFile() throws Exception {
 
         Tree tree = new Tree();
@@ -74,28 +77,6 @@ public class TreeTester {
         String str = Files.readString(Path.of(projPath + "/objects/" + hash));
         assertTrue(treeFile.exists());
         assertTrue(str.equals(tree.getEntries()));
-    }
-
-    public void createTestFile() throws Exception {
-
-        Path pathObject = Paths.get(projPath + "/testfile.txt");
-        Files.createFile(pathObject);
-
-        FileWriter writer = new FileWriter(projPath + "/testfile.txt");
-        writer.write(fileContents);
-        writer.close();
-    }
-
-    private void deleteStuff() throws IOException {
-        Files.delete(Paths.get(projPath + "/index"));
-        Files.delete(Paths.get(projPath + "/testfile.txt"));
-        File objectsFolder = new File(projPath + "/objects/");
-        String[] entries = objectsFolder.list();
-        for (String s : entries) {
-            File currentFile = new File(objectsFolder.getPath(), s);
-            currentFile.delete();
-        }
-        Files.delete(Paths.get(projPath + "/objects"));
     }
 
     public String getSha1(String input) throws Exception {

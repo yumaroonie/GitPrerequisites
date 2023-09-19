@@ -44,8 +44,7 @@ public class Index
             throw new Exception ("Project must be initialized before adding a Blob");
         }
         //creating Blob, updating hash map
-        Blob addBlob = new Blob (pathName + "/" + fileName);
-        addBlob.blobify (pathToObjectsString);
+        Blob addBlob = new Blob (pathName + "/" + fileName, pathName);
         nameAndSHAMap.put (fileName,addBlob.getSHA1String ());
         updateIndex ();
     }
@@ -60,7 +59,7 @@ public class Index
         {
             throw new Exception ("Cannot remove a Blob that was never added");
         }
-        Blob removeBlob = new Blob (pathName + "/" + fileName);
+        Blob removeBlob = new Blob (pathName + "/" + fileName, pathName);
         String SHAToRemove = removeBlob.getSHA1String();
         Path fileNamePath = Paths.get (pathToObjectsString + "/" + SHAToRemove);
         if (Files.notExists (fileNamePath))
@@ -69,7 +68,9 @@ public class Index
         }
         nameAndSHAMap.remove (fileName);
         File file = new File(pathToObjectsString + "/" + SHAToRemove);
-        file.delete();
+        while (file.exists()) {
+            file.delete();
+        }
         updateIndex();
     }
 

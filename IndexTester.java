@@ -57,6 +57,29 @@ public class IndexTester {
         deleteStuff();
     }
 
+    @Test
+    @DisplayName("Test if removing a blob works.")
+    public void testDelete() throws Exception{
+
+        createTestFile();
+        Index index = new Index();
+        index.initialize(projPath);
+        index.add("testfile.txt");
+        File blobFile = new File(projPath + "/objects/" + getSha1(fileContents));
+        assertTrue("Blob file was not created.", blobFile.exists());
+
+        assertEquals("File contents of added blob does not exist.", fileContents, Files.readString(Path.of(projPath + "/objects/" + getSha1(fileContents))));
+
+        String indexContents = Files.readString(Path.of(projPath + "/index"));
+        assertEquals("Index contents are incorrect.", indexContents, "testfile.txt : " + getSha1(fileContents) + "\n");
+
+        index.remove("testfile.txt");
+        indexContents = Files.readString(Path.of(projPath + "/index"));
+        assertTrue("Blob file was not removed.", !blobFile.exists());
+        assertEquals("Index contents were not removed.", indexContents, "");
+        deleteStuff();
+    }
+
     public String getSha1(String input) throws Exception {
         MessageDigest crypt = MessageDigest.getInstance("SHA-1");
         crypt.reset();
