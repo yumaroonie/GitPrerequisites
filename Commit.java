@@ -1,5 +1,7 @@
 import java.io.File;
 import java.security.MessageDigest;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Formatter;
 import java.util.Scanner;
 
@@ -11,18 +13,24 @@ public class Commit {
     String date;
     String summary;
 
-    public Commit(String sha1, String author, String date, String summary) throws Exception {
+    public Commit(String sha1, String author, String summary) throws Exception {
         Tree tree = new Tree();
         this.hashOfTree = tree.writeToFile();
         this.prevHash = sha1;
         this.nextHash = "";
         this.author = author;
-        this.date = date;
+        this.date = "";
         this.summary = summary;
     }
 
-    public Commit(String author, String date, String summary) throws Exception {
-        this("", author, date, summary);
+    public Commit(String author, String summary) throws Exception {
+        this("", author, summary);
+    }
+
+    public void getTime() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+        LocalDateTime now = LocalDateTime.now();
+        this.date = now.toString();
     }
 
     public String getSHA1fromString(String myString) throws Exception {
