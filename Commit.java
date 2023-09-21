@@ -14,8 +14,7 @@ public class Commit {
     String summary;
 
     public Commit(String sha1, String author, String summary) throws Exception {
-        Tree tree = new Tree();
-        this.hashOfTree = tree.writeToFile();
+        this.hashOfTree = createTree();
         this.prevHash = sha1;
         this.nextHash = "";
         this.author = author;
@@ -27,7 +26,12 @@ public class Commit {
         this("", author, summary);
     }
 
-    public void getTime() {
+    public String createTree() throws Exception {
+        Tree tree = new Tree();
+        return tree.writeToFile();
+    }
+
+    public void getDate() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();
         this.date = now.toString();
