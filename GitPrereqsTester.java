@@ -17,6 +17,6 @@ public class GitPrereqsTester
         myIndex.add ("bar.txt");
         myIndex.remove("foobar.txt");
 
-        Blob blobTest = new Blob("testfile.txt");
+        Blob blobTest = new Blob("testfile.txt", "./");
     }
 }

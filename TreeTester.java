@@ -23,9 +23,8 @@ import org.junit.jupiter.api.Test;
 
 public class TreeTester {
 
-    static String projPath = "/Users/ryancheng/p/Honors Topics/GitPrerequisites";
     String fileContents = "this is in file." + "\n" + "this is also in file.";
-    static File testfile = new File("testfile.txt");
+    String fileName = new String("testfile.txt");
 
     @Test
     @DisplayName("Tests adding entries to the trees")
@@ -73,8 +72,8 @@ public class TreeTester {
         tree.writeToFile();
 
         String hash = getSha1(tree.getEntries());
-        File treeFile = new File(projPath + "/objects/" + hash);
-        String str = Files.readString(Path.of(projPath + "/objects/" + hash));
+        File treeFile = new File("./objects/" + hash);
+        String str = Files.readString(Path.of("./objects/" + hash));
         assertTrue(treeFile.exists());
         assertTrue(str.equals(tree.getEntries()));
     }
