@@ -1,4 +1,6 @@
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,12 +20,39 @@ public class Commit {
         this.prevHash = sha1;
         this.nextHash = "";
         this.author = author;
-        this.date = "";
+        this.date = getDate();
         this.summary = summary;
+        String hash = createCommitHash();
+        File file = new File("./objects/" + hash);
+        file.createNewFile();
+        FileWriter writer = new FileWriter (new File ("./objects/" + hash));
+        PrintWriter out = new PrintWriter(writer);
+        out.print(hashOfTree + "\n" + prevHash + "\n" + nextHash + "\n" + author + "\n" + date + "\n" + summary);
+        writer.close();
+        out.close();
     }
 
     public Commit(String author, String summary) throws Exception {
         this("", author, summary);
+    }
+
+    public String createCommitHash() {
+        String content = hashOfTree + "\n" + prevHash + "\n" + "" + "\n" + author + "\n" + date + "\n" + summary;
+
+        StringBuilder output = new StringBuilder();
+
+        Scanner scanner = new Scanner(content);
+
+        while (scanner.hasNextLine()) {
+
+            String line = scanner.nextLine();
+
+            output.append(line);
+        }
+
+        scanner.close();
+
+        return output.toString();
     }
 
     public String createTree() throws Exception {
@@ -31,10 +60,10 @@ public class Commit {
         return tree.writeToFile();
     }
 
-    public void getDate() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+    public String getDate() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");  
         LocalDateTime now = LocalDateTime.now();
-        this.date = now.toString();
+        return now.toString();
     }
 
     public String getSHA1fromString(String myString) throws Exception {
