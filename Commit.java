@@ -25,7 +25,7 @@ public class Commit {
         String hash = createCommitHash();
         File file = new File("./objects/" + hash);
         file.createNewFile();
-        FileWriter writer = new FileWriter (new File ("./objects/" + hash));
+        FileWriter writer = new FileWriter (file);
         PrintWriter out = new PrintWriter(writer);
         out.print(hashOfTree + "\n" + prevHash + "\n" + nextHash + "\n" + author + "\n" + date + "\n" + summary);
         writer.close();
@@ -36,7 +36,7 @@ public class Commit {
         this("", author, summary);
     }
 
-    public String createCommitHash() {
+    public String createCommitHash() throws Exception {
         String content = hashOfTree + "\n" + prevHash + "\n" + "" + "\n" + author + "\n" + date + "\n" + summary;
 
         StringBuilder output = new StringBuilder();
@@ -52,7 +52,7 @@ public class Commit {
 
         scanner.close();
 
-        return output.toString();
+        return getSHA1fromString(output.toString());
     }
 
     public String createTree() throws Exception {
