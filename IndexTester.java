@@ -9,8 +9,6 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.Formatter;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,16 +17,15 @@ public class IndexTester {
     // uses create and delete at the start and end of each 
     // test because the beforeall and afterall methods
     // were not working
-    static String projPath = "/Users/ryancheng/p/Honors Topics/GitPrerequisites";
     String fileContents = "this is in file." + "\n" + "this is also in file.";
-    static File testfile = new File("testfile.txt");
+    String fileName = new String("testfile.txt");
 
     @Test
     @DisplayName("[8] Test if initialize and objects are created correctly")
     public void testInitialize() throws Exception {
 
         Index index = new Index();
-        index.initialize(projPath);
+        index.initialize("./");
 
         File indexFile = new File("index");
         assertTrue("The index file was not created.", indexFile.exists());
@@ -44,14 +41,14 @@ public class IndexTester {
         createTestFile();
 
         Index index = new Index();
-        index.initialize(projPath);
+        index.initialize("./");
         index.add("testfile.txt");
-        File blobFile = new File(projPath + "/objects/" + getSha1(fileContents));
+        File blobFile = new File("./objects/" + getSha1(fileContents));
         assertTrue("Blob file was not created.", blobFile.exists());
 
-        assertEquals("File contents of added blob does not exist.", fileContents, Files.readString(Path.of(projPath + "/objects/" + getSha1(fileContents))));
+        assertEquals("File contents of added blob does not exist.", fileContents, Files.readString(Path.of("./objects/" + getSha1(fileContents))));
 
-        String indexContents = Files.readString(Path.of(projPath + "/index"));
+        String indexContents = Files.readString(Path.of("./index"));
         assertEquals("Index contents are incorrect.", indexContents, "testfile.txt : " + getSha1(fileContents) + "\n");
 
         deleteStuff();
@@ -63,18 +60,18 @@ public class IndexTester {
 
         createTestFile();
         Index index = new Index();
-        index.initialize(projPath);
+        index.initialize("./");
         index.add("testfile.txt");
-        File blobFile = new File(projPath + "/objects/" + getSha1(fileContents));
+        File blobFile = new File("./objects/" + getSha1(fileContents));
         assertTrue("Blob file was not created.", blobFile.exists());
 
-        assertEquals("File contents of added blob does not exist.", fileContents, Files.readString(Path.of(projPath + "/objects/" + getSha1(fileContents))));
+        assertEquals("File contents of added blob does not exist.", fileContents, Files.readString(Path.of("./objects/" + getSha1(fileContents))));
 
-        String indexContents = Files.readString(Path.of(projPath + "/index"));
+        String indexContents = Files.readString(Path.of("./index"));
         assertEquals("Index contents are incorrect.", indexContents, "testfile.txt : " + getSha1(fileContents) + "\n");
 
         index.remove("testfile.txt");
-        indexContents = Files.readString(Path.of(projPath + "/index"));
+        indexContents = Files.readString(Path.of("./index"));
         assertTrue("Blob file was not removed.", !blobFile.exists());
         assertEquals("Index contents were not removed.", indexContents, "");
         deleteStuff();
@@ -94,24 +91,27 @@ public class IndexTester {
     }
 
     public void createTestFile() throws Exception {
+        Path pathObject = Paths.get("./testfile.txt");
+        if (!pathObject.toFile().exists()) {
+            Files.createFile(pathObject);
+        }
 
-        Path pathObject = Paths.get(projPath + "/testfile.txt");
-        Files.createFile(pathObject);
-
-        FileWriter writer = new FileWriter(projPath + "/testfile.txt");
+        FileWriter writer = new FileWriter("./testfile.txt");
         writer.write(fileContents);
         writer.close();
     }
 
-        private void deleteStuff() throws IOException {
-        Files.delete(Paths.get(projPath + "/index"));
-        Files.delete(Paths.get(projPath + "/testfile.txt"));
-        File objectsFolder = new File(projPath + "/objects/");
+    private void deleteStuff() throws IOException {
+        File index = new File("./index");
+        if (!index.exists())
+            index.delete();
+        Files.delete(Paths.get("./testfile.txt"));
+        File objectsFolder = new File("./objects/");
         String[] entries = objectsFolder.list();
         for (String s : entries) {
             File currentFile = new File(objectsFolder.getPath(), s);
             currentFile.delete();
         }
-        Files.delete(Paths.get(projPath + "/objects"));
+        Files.delete(Paths.get("./objects"));
     }
 }

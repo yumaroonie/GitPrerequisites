@@ -1,31 +1,19 @@
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.Formatter;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class TreeTester {
 
-    static String projPath = "/Users/ryancheng/p/Honors Topics/GitPrerequisites";
     String fileContents = "this is in file." + "\n" + "this is also in file.";
-    static File testfile = new File("testfile.txt");
+    String fileName = new String("testfile.txt");
 
     @Test
     @DisplayName("Tests adding entries to the trees")
@@ -73,8 +61,8 @@ public class TreeTester {
         tree.writeToFile();
 
         String hash = getSha1(tree.getEntries());
-        File treeFile = new File(projPath + "/objects/" + hash);
-        String str = Files.readString(Path.of(projPath + "/objects/" + hash));
+        File treeFile = new File("./objects/" + hash);
+        String str = Files.readString(Path.of("./objects/" + hash));
         assertTrue(treeFile.exists());
         assertTrue(str.equals(tree.getEntries()));
     }

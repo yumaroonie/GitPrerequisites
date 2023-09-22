@@ -9,16 +9,13 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.Formatter;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class BlobTester {
 
-    static String projPath = "/Users/ryancheng/p/Honors Topics/GitPrerequisites";
     String fileContents = "this is in file." + "\n" + "this is also in file.";
-    static File testfile = new File("testfile.txt");
+    String fileName = new String("testfile.txt");
 
     @Test
     @DisplayName("tests creating a blob")
@@ -26,10 +23,11 @@ public class BlobTester {
 
         createTestFile();
 
-        Blob blob = new Blob(projPath + "/testfile.txt", projPath);
-        File blobFile = new File(projPath + "/objects/" + getSha1(fileContents));
+        Blob blob = new Blob(fileName, ".");
+        File blobFile = new File("objects/" + getSha1(fileContents));
+        Path blobPath = Paths.get(blobFile.toURI());
         assertTrue(blobFile.exists());
-        assertEquals(fileContents, Files.readString(Path.of(projPath + "/objects/" + getSha1(fileContents))));
+        assertEquals(fileContents, Files.readString(blobPath));
         deleteStuff();
 
     }
@@ -39,10 +37,10 @@ public class BlobTester {
     public void testBlobHash() throws Exception {
         createTestFile();
 
-        Blob blob = new Blob(projPath + "/testfile.txt", projPath);
-        File blobFile = new File(projPath + "/objects/" + getSha1(fileContents));
+        Blob blob = new Blob("./testfile.txt", "./");
+        File blobFile = new File("./objects/" + getSha1(fileContents));
         assertTrue(blobFile.exists());
-        assertEquals(fileContents, Files.readString(Path.of(projPath + "/objects/" + getSha1(fileContents))));
+        assertEquals(fileContents, Files.readString(Path.of("./objects/" + getSha1(fileContents))));
 
         assertEquals("Sha is incorrect.", blob.getSHA1String(), getSha1(fileContents));
         deleteStuff();
@@ -50,17 +48,17 @@ public class BlobTester {
 
     private void deleteStuff() throws IOException {
 
-        File index = new File(projPath + "/index");
+        File index = new File("./index");
         if (!index.exists())
             index.delete();
-        Files.delete(Paths.get(projPath + "/testfile.txt"));
-        File objectsFolder = new File(projPath + "/objects/");
+        Files.delete(Paths.get("./testfile.txt"));
+        File objectsFolder = new File("./objects/");
         String[] entries = objectsFolder.list();
         for (String s : entries) {
             File currentFile = new File(objectsFolder.getPath(), s);
             currentFile.delete();
         }
-        Files.delete(Paths.get(projPath + "/objects"));
+        Files.delete(Paths.get("./objects"));
     }
 
     public String getSha1(String input) throws Exception {
@@ -78,10 +76,12 @@ public class BlobTester {
 
     public void createTestFile() throws Exception {
 
-        Path pathObject = Paths.get(projPath + "/testfile.txt");
-        Files.createFile(pathObject);
+        Path pathObject = Paths.get("./testfile.txt");
+        if (!pathObject.toFile().exists()) {
+            Files.createFile(pathObject);
+        }
 
-        FileWriter writer = new FileWriter(projPath + "/testfile.txt");
+        FileWriter writer = new FileWriter("./testfile.txt");
         writer.write(fileContents);
         writer.close();
     }
