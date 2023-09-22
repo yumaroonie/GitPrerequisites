@@ -25,7 +25,7 @@ public class Commit {
         String hash = createCommitHash();
         File file = new File("./objects/" + hash);
         file.createNewFile();
-        FileWriter writer = new FileWriter (file);
+        FileWriter writer = new FileWriter(file);
         PrintWriter out = new PrintWriter(writer);
         out.print(hashOfTree + "\n" + prevHash + "\n" + nextHash + "\n" + author + "\n" + date + "\n" + summary);
         writer.close();
@@ -37,10 +37,12 @@ public class Commit {
     }
 
     public void setNextCommit(String nextCommitHash) throws Exception {
-        this.nextHash = nextCommitHash;
+        if (this.nextHash == "") {
+            this.nextHash = nextCommitHash;
+        }
         String hash = createCommitHash();
         File file = new File("./objects/" + hash);
-        FileWriter writer = new FileWriter (file);
+        FileWriter writer = new FileWriter(file);
         PrintWriter out = new PrintWriter(writer);
         out.print(hashOfTree + "\n" + prevHash + "\n" + nextHash + "\n" + author + "\n" + date + "\n" + summary);
         writer.close();
@@ -50,20 +52,7 @@ public class Commit {
     public String createCommitHash() throws Exception {
         String content = hashOfTree + "\n" + prevHash + "\n" + "" + "\n" + author + "\n" + date + "\n" + summary;
 
-        StringBuilder output = new StringBuilder();
-
-        Scanner scanner = new Scanner(content);
-
-        while (scanner.hasNextLine()) {
-
-            String line = scanner.nextLine();
-
-            output.append(line);
-        }
-
-        scanner.close();
-
-        return getSHA1fromString(output.toString());
+        return getSHA1fromString(content);
     }
 
     public String createTree() throws Exception {
@@ -72,9 +61,9 @@ public class Commit {
     }
 
     public String getDate() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");  
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMM d, uuuu");
         LocalDateTime now = LocalDateTime.now();
-        return now.toString();
+        return now.format(dtf);
     }
 
     public String getSHA1fromString(String myString) throws Exception {

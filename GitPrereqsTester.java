@@ -1,3 +1,6 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class GitPrereqsTester
 {
     public static void main (String [] args) throws Exception
@@ -19,6 +22,20 @@ public class GitPrereqsTester
 
         // Blob blobTest = new Blob("testfile.txt", "./");
 
-        Commit commit = new Commit("op", "manny", "fun");
+        Commit commit = new Commit("Chris", "My name is Chris");
+
+        String date = commit.getDate();
+
+        String hash = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
+        String author = "Chris";
+        String summary = "My name is Chris";
+
+        StringBuilder sb = new StringBuilder(hash + "\n\n\n" + author + "\n" + date + "\n" + summary);
+        String compare = commit.getSHA1fromString(sb.toString());
+
+        System.out.println(commit.createCommitHash());
+        System.out.println(compare);
+
+        
     }
 }
