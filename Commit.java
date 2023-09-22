@@ -5,7 +5,6 @@ import java.security.MessageDigest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Formatter;
-import java.util.Scanner;
 
 public class Commit {
     String hashOfTree;

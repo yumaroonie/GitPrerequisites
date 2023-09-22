@@ -3,10 +3,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Formatter;
-import java.util.List;
 import java.util.Scanner;
 
 public class Tree {
