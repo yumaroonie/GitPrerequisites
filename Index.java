@@ -85,4 +85,9 @@ public class Index
         writer.close ();
         out.close ();
     }
+
+    public HashMap <String, String> getNameAndSHAMap ()
+    {
+        return nameAndSHAMap;
+    }
 }

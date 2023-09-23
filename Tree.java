@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class Tree {
 
     StringBuilder entries;
+    String ultimateTreeSHA1String;
 
     public Tree() {
 
@@ -21,7 +22,7 @@ public class Tree {
 
     public void add(String components) throws Exception {
 
-        String type = components.substring(0, components.indexOf(":"));
+        //String type = components.substring(0, components.indexOf(":"));
 
         if (!entries.toString().contains(components)) {
             if (entries.isEmpty()) {
@@ -84,5 +85,36 @@ public class Tree {
         String SHA1 = formatter.toString();
         formatter.close();
         return SHA1;
+    }
+
+    public String addDirectory (String directoryPath) throws Exception
+    {
+        File mainDirectory = new File (directoryPath);
+        if (!mainDirectory.exists ())
+        {
+            throw new Exception ("Invalid directory; the specified directory does not exist.");
+        }
+        if (!mainDirectory.canRead ())
+        {
+            throw new Exception ("Invalid directory; the specified directory exists but is not readable.");
+        }
+        Index i = new Index ();
+        i.initialize(".");
+        Tree myTree = new Tree ();
+        for (String filePath : mainDirectory.list ())
+        {
+            i.add (filePath);
+            //idk if any of this has right filepaths
+            myTree.add ("blob : " + i.getNameAndSHAMap ().get (filePath) + " : " + filePath);
+        }
+        
+
+        //ultimateTreeSHA1String = ;
+        //return 
+    }
+
+    public String getUltimateTreeSHA1String ()
+    {
+        return ultimateTreeSHA1String;
     }
 }
