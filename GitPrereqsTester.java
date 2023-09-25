@@ -4,7 +4,7 @@ public class GitPrereqsTester
     public static void main (String [] args) throws Exception
     {
         Tree myTree = new Tree ();
-        myTree.addDirectory ("exampleDirectory");
+        myTree.addDirectory ("advancedDirectory");
         
         // //tests initialize
         // Index myIndex = new Index ();

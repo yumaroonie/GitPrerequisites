@@ -112,6 +112,54 @@ public class TreeTester {
 
         //case 2 (advanced)
 
+        //clearing objects folder again
+        for (File secondFile : objects.listFiles ())
+        {
+            secondFile.delete ();
+        }
+        //making test directories
+        File advancedDirectory = new File ("advancedDirectory");
+        advancedDirectory.mkdir();
+        File directoryEmpty = new File ("advancedDirectory/directoryEmpty");
+        directoryEmpty.mkdir();
+        File directoryFull = new File ("advancedDirectory/directoryFull");
+        directoryFull.mkdir();
+        //making test files
+        makeTextFile("./advancedDirectory/textFileOuter1", "fileOuter1");
+        makeTextFile("./advancedDirectory/textFileOuter2", "fileOuter2");
+        makeTextFile("./advancedDirectory/textFileOuter3", "fileOuter3");
+        makeTextFile("./advancedDirectory/directoryFull/textFileInner", "this file is inner");
+        //testing addDirectory
+        Tree mySecondTree = new Tree ();
+        mySecondTree.addDirectory ("advancedDirectory");
+        //checking simple blobs' existence and correctness
+        File file4 = new File ("./objects/0c730a39f2a0ec1481f82dd013f97f83ac10b7a0");
+        File file5 = new File ("./objects/c63fe4fa48b0e578320db7361a926310c0ca1850");
+        File file6 = new File ("./objects/1c652ca5712f0160f74216041d95252e40c78d9f");
+        File file7 = new File ("./objects/a16b86280512f4fb3962608623137b6a2e1c1c9c");
+
+        //checking that non-tree files (file blobs) exist
+        assertTrue (file4.exists () && file5.exists () && file6.exists () && file7.exists ());
+        //checks to see if these files' contents are correct
+        assertTrue (fileConsistsOfContents ("./objects/0c730a39f2a0ec1481f82dd013f97f83ac10b7a0", "fileOuter1") && fileConsistsOfContents("./objects/c63fe4fa48b0e578320db7361a926310c0ca1850", "fileOuter2") && fileConsistsOfContents("./objects/1c652ca5712f0160f74216041d95252e40c78d9f", "fileOuter3") && fileConsistsOfContents ("./objects/a16b86280512f4fb3962608623137b6a2e1c1c9c", "this file is inner"));
+
+        File thirdFile = new File("./objects/2c114347ac36cc8605e417ef539019b33823e2c5");
+        //checks to see if saved tree file exists
+        assertTrue (thirdFile.exists ());
+        //checks to make sure saved tree file is correct length
+        assertTrue (Files.lines (Paths.get("./objects/2c114347ac36cc8605e417ef539019b33823e2c5")).count () == 5);
+        //checks to see if saved tree file contains correct entries
+        assertTrue (fileContainsContents ("./objects/2c114347ac36cc8605e417ef539019b33823e2c5", "blob : 0c730a39f2a0ec1481f82dd013f97f83ac10b7a0 : textFileOuter1") && fileContainsContents("./objects/2c114347ac36cc8605e417ef539019b33823e2c5", "tree : da39a3ee5e6b4b0d3255bfef95601890afd80709 : directoryEmpty") && fileContainsContents("./objects/2c114347ac36cc8605e417ef539019b33823e2c5", "blob : 1c652ca5712f0160f74216041d95252e40c78d9f : textFileOuter3") && fileContainsContents("./objects/2c114347ac36cc8605e417ef539019b33823e2c5", "blob : c63fe4fa48b0e578320db7361a926310c0ca1850 : textFileOuter2") && fileContainsContents("./objects/2c114347ac36cc8605e417ef539019b33823e2c5", "tree : 8d3584978ffa2af44d377fae1175d31164bb9afb : directoryFull"));
+        File fourthFile = new File ("./objects/8d3584978ffa2af44d377fae1175d31164bb9afb");
+        //checks to see if saved tree file exists
+        assertTrue (fourthFile.exists ());
+        //checks to see if saved tree file consists of correct entry
+        assertTrue (fileConsistsOfContents ("./objects/8d3584978ffa2af44d377fae1175d31164bb9afb", "blob : a16b86280512f4fb3962608623137b6a2e1c1c9c : textFileInner"));
+        File fifthFile = new File ("./objects/da39a3ee5e6b4b0d3255bfef95601890afd80709");
+        //checks to see if saved tree file exists
+        assertTrue (fifthFile.exists ());
+        //checks to see if saved tree file is of length 0 as it should be
+        assertTrue (fifthFile.length () == 0);
     }
 
     private void makeTextFile (String path, String contents) throws IOException
