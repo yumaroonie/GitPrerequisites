@@ -3,10 +3,10 @@ public class GitPrereqsTester
 {
     public static void main (String [] args) throws Exception
     {
-        Commit myCommit = new Commit ("chris2", "iswaytooepic");
+        //Commit myCommit = new Commit ("chris2", "iswaytooepic");
         
-        //Tree myTree = new Tree ();
-        //myTree.addDirectory ("advancedDirectory");
+        Tree myTree = new Tree ();
+        myTree.addDirectory ("advancedDirectory");
         
         // //tests initialize
         // Index myIndex = new Index ();

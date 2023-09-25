@@ -112,7 +112,8 @@ public class Tree {
             }
             else
             {
-                myTree.add ("tree : " + addDirectory (fullPath) + " : " + fileOrDirPath);
+                Tree childTree = new Tree ();
+                myTree.add ("tree : " + childTree.addDirectory (fullPath) + " : " + fileOrDirPath);
             }
         }
         ultimateTreeSHA1String = myTree.writeToFile ();
