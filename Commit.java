@@ -29,10 +29,12 @@ public class Commit {
         out.print(hashOfTree + "\n" + prevHash + "\n" + nextHash + "\n" + author + "\n" + date + "\n" + summary);
         writer.close();
         out.close();
+        updateHEAD ();
     }
 
     public Commit(String author, String summary) throws Exception {
         this("", author, summary);
+        updateHEAD ();
     }
 
     public void setNextCommit(String nextCommitHash) throws Exception {
@@ -77,5 +79,16 @@ public class Commit {
         String SHA1 = formatter.toString();
         formatter.close();
         return SHA1;
+    }
+
+    public void updateHEAD () throws Exception
+    {
+        File head = new File ("./HEAD");
+        head.createNewFile();
+        FileWriter writer = new FileWriter("./HEAD",false);
+        PrintWriter out = new PrintWriter(writer);
+        out.print (createCommitHash ());
+        writer.close ();
+        out.close ();
     }
 }
