@@ -1,10 +1,12 @@
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +14,9 @@ public class CommitTester {
 
     @Test
     void testCreateCommitHash() throws Exception {
+        File head = new File ("HEAD");
+        head.delete ();
+
         Commit commit = new Commit("Chris", "My name is Chris");
 
         String output = commit.createCommitHash();
@@ -31,6 +36,26 @@ public class CommitTester {
         System.out.println(compare);
 
         assertTrue("The Correct Hash is Returned", compare.equals(output));
+        
+        //test HEAD creation functionality
+        //makes sure HEAD exists
+        assertTrue (head.exists ());
+
+        Scanner scan = new Scanner(head);
+        scan.useDelimiter("\\Z");  
+        String scannedContent = scan.next();     
+        scan.close ();
+
+        //makes sure HEAD contents consists of correct SHA1 value (SHA1 of commit)
+        assertTrue (scannedContent.equals (compare));
+
+        //test HEAD updating functionality
+        Commit secondCommit = new Commit ("Andrew", "My name is Andrew Khacha");
+        Scanner scan2 = new Scanner(head);
+        scan2.useDelimiter("\\Z");  
+        String scannedContent2 = scan2.next();     
+        scan2.close ();
+        assertTrue (scannedContent2.equals (secondCommit.createCommitHash ()));
     }
 
     @Test
