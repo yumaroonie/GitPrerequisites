@@ -71,12 +71,12 @@ public class CommitTester {
     @Test
     void testSetNextCommit() throws Exception {
         Commit commit = new Commit("Chris", "My name is Chris");
-
+        String oldHash = commit.createCommitHash();
         commit.setNextCommit("next");
+        
+        assertTrue("Hash doesn't change when next commit is changed", commit.createCommitHash().equals(oldHash));
 
-        assertTrue("Hash doesn't change when next commit is changed", commit.createCommitHash().equals("81066e8c5a07898f9428bd7c3ffcf2c03bc524d1"));
-
-        Path path = Paths.get("./objects/81066e8c5a07898f9428bd7c3ffcf2c03bc524d1");
+        Path path = Paths.get("./objects/" + oldHash);
 
         String content = Files.readString(path);
 

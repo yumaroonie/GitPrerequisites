@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 public class Tree {
 
-    StringBuilder entries;
-    String ultimateTreeSHA1String;
+    private StringBuilder entries;
+    private String ultimateTreeSHA1String;
 
     public Tree() {
 
@@ -104,10 +104,10 @@ public class Tree {
         for (String filePath : mainDirectory.list ())
         {
             i.add (filePath);
-            //idk if any of this has right filepaths
+            //idk if any of this has right filepaths 
             myTree.add ("blob : " + i.getNameAndSHAMap ().get (filePath) + " : " + filePath);
         }
-        
+        return "hi";
 
         //ultimateTreeSHA1String = ;
         //return 
@@ -116,5 +116,10 @@ public class Tree {
     public String getUltimateTreeSHA1String ()
     {
         return ultimateTreeSHA1String;
+    }
+
+    public String getEntriesToString ()
+    {
+        return entries.toString ();
     }
 }

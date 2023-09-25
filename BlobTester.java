@@ -23,7 +23,7 @@ public class BlobTester {
 
         createTestFile();
 
-        //Blob blob = new Blob(fileName, ".");
+        Blob blob = new Blob(fileName, ".");
         File blobFile = new File("objects/" + getSha1(fileContents));
         Path blobPath = Paths.get(blobFile.toURI());
         assertTrue(blobFile.exists());

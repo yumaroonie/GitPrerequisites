@@ -3,6 +3,11 @@ public class GitPrereqsTester
 {
     public static void main (String [] args) throws Exception
     {
+        //Tree myTree = new Tree ();
+        //myTree.addDirectory ("exampleDirectory");
+        Commit myCommit = new Commit ("Chris","My name is Chris");
+        System.out.println (myCommit.createCommitHash());
+
         // //tests initialize
         // Index myIndex = new Index ();
         // myIndex.initialize ("/Users/ryancheng/p/Honors Topics/GitPrerequisites");
@@ -19,7 +24,7 @@ public class GitPrereqsTester
         // myIndex.remove("foobar.txt");
 
         // Blob blobTest = new Blob("testfile.txt", "./");
-
+        /*
         Commit commit = new Commit("Chris", "My name is Chris");
 
         String date = commit.getDate();
@@ -33,7 +38,7 @@ public class GitPrereqsTester
 
         System.out.println(commit.createCommitHash());
         System.out.println(compare);
-
+        */
         
     }
 }
