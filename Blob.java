@@ -39,8 +39,14 @@ public class Blob
 
     public String getSHA1String () throws FileNotFoundException, UnsupportedEncodingException, NoSuchAlgorithmException
     {
+        File fileToRead = new File (inputFilePath);
+        if (fileToRead.length () == 0)
+        {
+            myString = "";
+            return "da39a3ee5e6b4b0d3255bfef95601890afd80709";
+        }
         //reads file into String myString
-        Scanner scanner = new Scanner(new File(inputFilePath));
+        Scanner scanner = new Scanner(fileToRead);
         myString = scanner.useDelimiter("\\A").next();
         scanner.close();
         //hashes file with SHA1 hash code into String called SHA1

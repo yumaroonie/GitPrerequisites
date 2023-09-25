@@ -17,12 +17,12 @@ public class BlobTester {
     String fileContents = "this is in file." + "\n" + "this is also in file.";
     String fileName = new String("testfile.txt");
 
+    @SuppressWarnings(value = { "unused" })
     @Test
     @DisplayName("tests creating a blob")
     public void testCreateBlob() throws Exception {
 
         createTestFile();
-
         Blob blob = new Blob(fileName, ".");
         File blobFile = new File("objects/" + getSha1(fileContents));
         Path blobPath = Paths.get(blobFile.toURI());

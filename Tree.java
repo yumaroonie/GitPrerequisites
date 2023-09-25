@@ -101,16 +101,22 @@ public class Tree {
         Index i = new Index ();
         i.initialize(".");
         Tree myTree = new Tree ();
-        for (String filePath : mainDirectory.list ())
+        for (String fileOrDirPath : mainDirectory.list ())
         {
-            i.add (filePath);
-            //idk if any of this has right filepaths 
-            myTree.add ("blob : " + i.getNameAndSHAMap ().get (filePath) + " : " + filePath);
+            String fullPath = directoryPath + "/" + fileOrDirPath;
+            File currentFileOrDir = new File (fullPath);
+            if (currentFileOrDir.isFile ())
+            {
+                i.add (fullPath);
+                myTree.add ("blob : " + i.getNameAndSHAMap ().get (fullPath) + " : " + fileOrDirPath);
+            }
+            else
+            {
+                myTree.add ("tree : " + addDirectory (fullPath) + " : " + fileOrDirPath);
+            }
         }
-        return "hi";
-
-        //ultimateTreeSHA1String = ;
-        //return 
+        ultimateTreeSHA1String = myTree.writeToFile ();
+        return ultimateTreeSHA1String;
     }
 
     public String getUltimateTreeSHA1String ()

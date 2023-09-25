@@ -3,11 +3,9 @@ public class GitPrereqsTester
 {
     public static void main (String [] args) throws Exception
     {
-        //Tree myTree = new Tree ();
-        //myTree.addDirectory ("exampleDirectory");
-        Commit myCommit = new Commit ("Chris","My name is Chris");
-        System.out.println (myCommit.createCommitHash());
-
+        Tree myTree = new Tree ();
+        myTree.addDirectory ("exampleDirectory");
+        
         // //tests initialize
         // Index myIndex = new Index ();
         // myIndex.initialize ("/Users/ryancheng/p/Honors Topics/GitPrerequisites");
