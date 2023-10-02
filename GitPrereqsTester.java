@@ -10,20 +10,25 @@ public class GitPrereqsTester
         //myTree.addDirectory ("advancedDirectory");
         
         //tests initialize
-        Index myIndex = new Index ();
-        myIndex.initialize ("/Users/chrisheadley/Desktop/Comp Sci/GitPrerequisites");
+        //Index myIndex = new Index ();
+        //myIndex.initialize ("/Users/chrisheadley/Desktop/Comp Sci/GitPrerequisites");
 
         // //tests blobify, printing sha1 of file contents
         // //Blob myBlob = new Blob ("/Users/chrisheadley/Desktop/Comp Sci/GitPrerequisites/ToBeBlobbed.txt");
         // //myBlob.blobify ("/Users/chrisheadley/Desktop/Comp Sci/GitPrerequisites/objects");
         // //System.out.println (myBlob.getSHA1String());
 
-        myIndex.add ("foo.txt");
-        myIndex.add ("foobar.txt");
-        myIndex.add ("bar.txt");
-        myIndex.add ("bar.txt");
+        Index myIndex = new Index ();
+        myIndex.initialize (".");
+        myIndex.indexAddDirectory("advancedDirectory");
+/*
+        myIndex.indexAddFile ("foo.txt");
+        myIndex.indexAddFile ("foobar.txt");
+        myIndex.indexAddFile ("bar.txt");
+        myIndex.indexAddFile ("bar.txt");
         myIndex.remove("foobar.txt");
         myIndex.updateIndex();
+        */
 
         // Blob blobTest = new Blob("testfile.txt", "./");
         /*

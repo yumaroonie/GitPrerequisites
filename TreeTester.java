@@ -75,6 +75,8 @@ public class TreeTester {
     @Test
     @DisplayName("tests  adding a directory to the tree")
     void testAddDirectory() throws Exception {
+        Index i = new Index ();
+        i.initialize ("./");
         //clears objects folder
         File objects = new File ("objects");
         for (File file : objects.listFiles ())

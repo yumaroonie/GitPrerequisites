@@ -107,8 +107,8 @@ public class Tree {
             File currentFileOrDir = new File (fullPath);
             if (currentFileOrDir.isFile ())
             {
-                i.add (fullPath);
-                myTree.add ("blob : " + i.getNameAndSHAMap ().get (fullPath) + " : " + fileOrDirPath);
+                i.indexAddFile (fullPath);
+                myTree.add ("blob : " + i.getNameAndEntryMap ().get (fullPath).getSHA1 () + " : " + fileOrDirPath);
             }
             else
             {
