@@ -12,6 +12,8 @@ import java.security.MessageDigest;
 import java.util.Formatter;
 import java.util.Scanner;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +21,26 @@ public class TreeTester {
 
     String fileContents = "this is in file." + "\n" + "this is also in file.";
     String fileName = new String("testfile.txt");
+
+
+    @BeforeAll
+    static void setUpBeforeClass() throws Exception {
+        File index = new File ("index");
+        File objects = new File ("objects");
+        index.delete ();
+        index.createNewFile ();
+        objects.delete ();
+        objects.mkdir ();
+    }
+    @Test
+    @AfterAll
+    static void tearDownAfterClass() throws Exception {
+        File index = new File ("index");
+        File objects = new File ("objects");
+        index.delete ();
+        index.createNewFile ();
+        objects.delete ();
+    }
 
     @Test
     @DisplayName("Tests adding entries to the trees")

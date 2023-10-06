@@ -1,6 +1,8 @@
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -8,12 +10,39 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class CommitTester {
 
+ @BeforeAll
+    static void setUpBeforeClass() throws Exception {
+        File index = new File ("index");
+        File objects = new File ("objects");
+        File head = new File ("HEAD");
+        index.delete ();
+        index.createNewFile ();
+        objects.delete ();
+        objects.mkdir ();
+        head.delete ();
+    }
     @Test
-    void testGetCommitSHA1() throws Exception {
+    @AfterAll
+    static void tearDownAfterClass() throws Exception {
+        File index = new File ("index");
+        File objects = new File ("objects");
+        File head = new File ("HEAD");
+        index.delete ();
+        index.createNewFile ();
+        objects.delete ();
+        head.delete ();
+    }
+
+    @Test
+    void testGetCommitSHA1andUpdateHEAD() throws Exception {
+
+
         File head = new File ("HEAD");
         head.delete ();
 
@@ -59,7 +88,7 @@ public class CommitTester {
     }
 
     @Test
-    void testCreateTree() throws Exception {
+    void testCreateTree() throws Exception {//not detailed
         Commit commit = new Commit("Chris", "My name is Chris");
 
         commit.createTree();
@@ -116,5 +145,25 @@ public class CommitTester {
         String compare = hash + "\n" + "" + "\n" + "next" + "\n" + author + "\n" + date + "\n" + summary;
 
         assertTrue("Commit File updates with next commit", compare.equals(content));
+    }
+
+    @Test
+    void testGetTreeSHA1FromCommit() throws Exception {
+        File head = new File ("./HEAD");
+        head.delete ();
+
+        Index i = new Index ();
+        i.initialize(".");
+        File pookie = new File ("pookieDoodle");
+        pookie.createNewFile ();
+        FileWriter writer = new FileWriter(pookie,false);
+        PrintWriter print = new PrintWriter(writer);
+            print.print ("pookieIsAFunnyName");
+            writer.close ();
+            print.close ();
+        
+        i.indexAddFile ("pookieDoodle");
+        Commit myCommit = new Commit ("Chris", "isCool");
+        assertEquals (Commit.getTreeSHA1FromCommit (myCommit.getCommitSHA1 ()), "92750b8d5d1901f627dd556cfc0152c1d2405878");
     }
 }

@@ -25,8 +25,8 @@ public class Commit {
     String summary;
 
     public Commit(String sha1, String author, String summary) throws Exception {
-        this.hashOfTree = createTree();
         this.prevHash = sha1;
+        this.hashOfTree = createTree();
         this.nextHash = "";
         this.author = author;
         this.date = getDate();
@@ -49,7 +49,7 @@ public class Commit {
         if (head.exists ())//i.e. if there is a previous commit
         {
             Scanner scanner = new Scanner(new File("./HEAD"));
-            String prevCommit = scanner.useDelimiter("\\A").next();
+            String prevCommit = "./objects/" + scanner.useDelimiter("\\A").next();
             scanner.close();
 
             //replacing line 3
@@ -103,26 +103,28 @@ public class Commit {
         Tree tree = new Tree();
 
         //adding each file in index
-        FileInputStream fstream = new FileInputStream("index");
+        File index = new File ("index");
+        if (!index.exists () || index.length () != 0)
+        {
+            FileInputStream fstream = new FileInputStream("index");
 
-        // Get the object of DataInputStream
-        DataInputStream in = new DataInputStream(fstream);
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            // Get the object of DataInputStream
+            DataInputStream in = new DataInputStream(fstream);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
-        String strLine;
+            String strLine;
 
-        //Read File Line By Line
-        while ((strLine = br.readLine()) != null)   {
-        // Print the content on the console
-            tree.add (strLine);
+            //Read File Line By Line
+            while ((strLine = br.readLine()) != null)   {
+            // Print the content on the console
+                tree.add (strLine);
         }
 
         //Close the input stream
         in.close();
-
+    }
 
         //clearing index
-        File index = new File ("index");
         if (index.exists ())
         {
             index.delete ();
@@ -130,7 +132,10 @@ public class Commit {
         index.createNewFile ();
 
         //adding previous tree
-        tree.add ("tree : " + prevHash);
+        if (!prevHash.equals (""))
+        {
+            tree.add ("tree : " + prevHash);
+        }
 
         return tree.writeToFile();
     }
@@ -170,7 +175,7 @@ public class Commit {
     //This method will open the SHA1 of the Commit and return the hash of the Tree (it's first line)
     public static String getTreeSHA1FromCommit (String commitSHA) throws Exception
     {
-        File commitFile = new File (commitSHA);
+        File commitFile = new File ("./objects/" + commitSHA);
         if (!commitFile.exists ())
         {
             throw new Exception ("No commit exists with the given SHA.");
