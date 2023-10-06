@@ -58,7 +58,6 @@ public class Commit {
             lines.set(2, getCommitSHA1 ());
             Files.write(path, lines, StandardCharsets.UTF_8);
 
-
             //trimming new line from end
             File commitToTrim = new File (prevCommit);
             Scanner commitScanner = new Scanner(commitToTrim);
