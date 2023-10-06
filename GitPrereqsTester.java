@@ -1,18 +1,12 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.io.RandomAccessFile;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Scanner;
 
 public class GitPrereqsTester
 {
     public static void main (String [] args) throws Exception
     {
+        /*
 Path path = Paths.get("exampleCommit");
     List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
     lines.set(2, "wreckedFoo");
@@ -31,7 +25,31 @@ Scanner scanner = new Scanner(example);
         writer.close ();
         out.close ();
         
+*/
 
+Index i = new Index ();
+        i.initialize (".");
+
+        File file1 = new File ("file1.txt");
+        file1.createNewFile ();
+        FileWriter writer = new FileWriter(file1,false);
+        PrintWriter print = new PrintWriter(writer);
+        print.print ("this is my first file!");
+        writer.close ();
+        print.close ();
+
+        File file2 = new File ("file2.txt");
+        file2.createNewFile ();
+        FileWriter writer2 = new FileWriter(file2,false);
+        PrintWriter print2 = new PrintWriter(writer2);
+        print2.print ("this is my second file!\nisn't it great?");
+        writer2.close ();
+        print2.close ();
+
+        i.indexAddFile ("file1.txt");
+        i.indexAddFile ("file2.txt");
+
+        Commit myCommit = new Commit ("Chris", "justCommittedTwoFiles");
 
         //Commit myCommit = new Commit ("chris2", "iswaytooepic");
         

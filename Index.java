@@ -105,44 +105,6 @@ public class Index
         }
         writer.close ();
         out.close ();
-/*
-    
-        int numDone = 0;
-        for (String key : nameAndEntryMap.keySet ())
-        {
-            if (nameAndEntryMap.get (key).getType ().equals ("blob"))
-            {
-                if (numDone == 0)
-                {
-                    out.print ("blob : " + key + " : " + myMap.get (key).getFileName ());
-                }
-                else
-                {
-                    out.print ("\nblob : " + key + " : " + myMap.get (key).getFileName ());
-                }
-            }
-            else
-            {
-                if (numDone == 0)
-                {
-                    out.print ("tree : " + key);
-                }
-                else
-                {
-                    out.print ("\ntree : " + key);
-                }
-            }
-            numDone++;
-        }
-        writer.close();
-        out.close ();
-        //renaming file
-        sha1 = SHA1FilePath("./temp");
-        File file2 = new File ("./objects/" + sha1);
-        myFile.renameTo (file2);
-    }
-         */
-
     }
 
     public HashMap <String, IndexEntry> getNameAndEntryMap ()
