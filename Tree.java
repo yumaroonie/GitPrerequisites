@@ -1,6 +1,10 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.util.Formatter;
@@ -35,11 +39,12 @@ public class Tree {
         }
         else if (components.charAt (1) == 'd')
         {//if deleting
-            
+            searchForFileNameInTree (components.substring (10), writeToFile ());
         }
         else
         {//if editing
-
+            String fileName = components.substring (9);
+            
         }
     }
 
@@ -137,4 +142,64 @@ public class Tree {
     {
         return entries.toString ();
     }
+
+    public void searchForFileNameInTree (String str, String treeSHA) throws Exception
+    {
+        File currentTree = new File ("./objects/" + treeSHA);
+        if (currentTree.length () != 0)
+        {
+        Scanner scanner = new Scanner(currentTree);
+        String currentTreeString = "./objects/" + scanner.useDelimiter("\\A").next();
+        scanner.close();
+            if (currentTreeString.contains (str))
+            {
+                FileInputStream fstream = new FileInputStream("./objects/" + treeSHA);
+
+                // Get the object of DataInputStream
+                DataInputStream in = new DataInputStream(fstream);
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+                String strLine;
+
+                //Read File Line By Line
+                while ((strLine = br.readLine()) != null)   {
+            
+                    if (!strLine.contains (str))
+                    {
+                        add (strLine);
+                    }
+                 }
+                 //Close the input stream
+                in.close();
+            }
+            else
+            {
+                FileInputStream fstream = new FileInputStream("./objects/" + treeSHA);
+
+                // Get the object of DataInputStream
+                DataInputStream in = new DataInputStream(fstream);
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+                String strLine;
+
+                //Read File Line By Line
+                while ((strLine = br.readLine()) != null)   {
+            
+                    if (strLine.contains ("tree"))
+                    {
+                        searchForFileNameInTree (str, strLine.substring (7,47));
+                    }
+                    else
+                    {
+                        add (strLine);
+                    }
+                 }
+                 //Close the input stream
+                in.close();
+            }
+
+        }
+    }
+    
 }
+
