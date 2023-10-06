@@ -22,17 +22,25 @@ public class Tree {
 
     public void add(String components) throws Exception {
 
-        //String type = components.substring(0, components.indexOf(":"));
-
-        if (!entries.toString().contains(components)) {
-            if (entries.isEmpty()) {
-                entries.append(components);
-            } else {
-                entries.append("\n");
-                entries.append(components);
+        if (components.charAt (0) == 'b' || components.charAt (0) == 't')
+        {
+            if (!entries.toString().contains(components)) {
+                if (entries.isEmpty()) {
+                    entries.append(components);
+                } else {
+                    entries.append("\n");
+                    entries.append(components);
+                }
             }
         }
+        else if (components.charAt (1) == 'd')
+        {//if deleting
+            
+        }
+        else
+        {//if editing
 
+        }
     }
 
     public void remove(String components) throws Exception {

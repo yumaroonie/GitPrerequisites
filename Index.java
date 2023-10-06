@@ -86,6 +86,26 @@ public class Index
         updateIndex();
     }
 
+    public void deleteSavedFile (String fileToDelete) throws Exception
+    {
+        if (!initialized)
+        {
+            throw new Exception ("Project must be initialized before deleting a saved file");
+        }
+        nameAndEntryMap.put (fileToDelete, new IndexEntry ("*deleted*", ""));
+        updateIndex ();
+    }
+
+    public void editExistingSavedFile (String fileToEdit) throws Exception
+    {
+        if (!initialized)
+        {
+            throw new Exception ("Project must be initialized before editing a saved file");
+        }
+        nameAndEntryMap.put (fileToEdit, new IndexEntry ("*edited*", ""));
+        updateIndex ();
+    }
+
     public void updateIndex () throws IOException
     {
         FileWriter writer = new FileWriter(pathToIndexString,false);
@@ -95,12 +115,26 @@ public class Index
         {
             if (first)
             {
-                out.print (nameAndEntryMap.get (key).getType () + " : " + nameAndEntryMap.get (key).getSHA1() + " : " + key);
+                if (nameAndEntryMap.get (key).getType ().equals ("blob") || nameAndEntryMap.get(key).getType ().equals ("tree"))
+                {
+                    out.print (nameAndEntryMap.get (key).getType () + " : " + nameAndEntryMap.get (key).getSHA1() + " : " + key);
+                }
+                else
+                {
+                    out.print (nameAndEntryMap.get (key).getType () + " " + key);
+                }
                 first = false;
             }
             else
             {
-                out.print ("\n" + nameAndEntryMap.get (key).getType () + " : " + nameAndEntryMap.get (key).getSHA1() + " : " + key);
+                if (nameAndEntryMap.get (key).getType ().equals ("blob") || nameAndEntryMap.get(key).getType ().equals ("tree"))
+                {
+                    out.print ("\n" + nameAndEntryMap.get (key).getType () + " : " + nameAndEntryMap.get (key).getSHA1() + " : " + key);
+                }
+                else
+                {
+                    out.print ("\n" + nameAndEntryMap.get (key).getType () + " " + key);
+                }
             }
         }
         writer.close ();

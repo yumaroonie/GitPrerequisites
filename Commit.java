@@ -133,7 +133,7 @@ public class Commit {
         //adding previous tree
         if (!prevHash.equals (""))
         {
-            tree.add ("tree : " + prevHash);
+            tree.add ("tree : " + getTreeSHA1FromCommit(prevHash));
         }
 
         return tree.writeToFile();

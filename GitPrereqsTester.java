@@ -26,6 +26,7 @@ Scanner scanner = new Scanner(example);
         out.close ();
         
 */
+/*
 
 Index i = new Index ();
         i.initialize (".");
@@ -50,6 +51,12 @@ Index i = new Index ();
         i.indexAddFile ("file2.txt");
 
         Commit myCommit = new Commit ("Chris", "justCommittedTwoFiles");
+*/
+
+Index i = new Index ();
+i.initialize (".");
+i.editExistingSavedFile("mashallah.txt");
+i.deleteSavedFile ("hehe");
 
         //Commit myCommit = new Commit ("chris2", "iswaytooepic");
         
@@ -71,9 +78,10 @@ File foobar = new File ("foobar.txt");
         scanner.close();
         System.out.println (commitContents);
         */
-        Index myIndex = new Index ();
-        myIndex.initialize (".");
-        myIndex.indexAddDirectory("advancedDirectory");
+        
+        //Index myIndex = new Index ();
+        //myIndex.initialize (".");
+        //myIndex.indexAddDirectory("advancedDirectory");
 /*
         myIndex.indexAddFile ("foo.txt");
         myIndex.indexAddFile ("foobar.txt");
