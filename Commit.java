@@ -5,10 +5,15 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Formatter;
+import java.util.List;
 import java.util.Scanner;
 
 public class Commit {
@@ -44,12 +49,29 @@ public class Commit {
         if (head.exists ())//i.e. if there is a previous commit
         {
             Scanner scanner = new Scanner(new File("./HEAD"));
-            String headContents = scanner.useDelimiter("\\A").next();
+            String prevCommit = scanner.useDelimiter("\\A").next();
             scanner.close();
+
+            //replacing line 3
+            Path path = Paths.get(prevCommit);
+            List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+            lines.set(2, getCommitSHA1 ());
+            Files.write(path, lines, StandardCharsets.UTF_8);
+
+
+            //trimming new line from end
+            File commitToTrim = new File (prevCommit);
+            Scanner commitScanner = new Scanner(commitToTrim);
+            String untrimmed = commitScanner.useDelimiter("\\A").next();
+            String trimmed = untrimmed.substring (0, untrimmed.length () - 1);
+            commitScanner.close();
+
+            FileWriter prevWriter = new FileWriter(prevCommit,false);
+            PrintWriter prevPrint = new PrintWriter(prevWriter);
+            prevPrint.print (trimmed);
+            prevWriter.close ();
+            prevPrint.close ();
         }
-        
-
-
         updateHEAD ();
     }
 
