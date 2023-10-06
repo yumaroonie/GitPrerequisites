@@ -1,0 +1,5 @@
+blob : 0c730a39f2a0ec1481f82dd013f97f83ac10b7a0 : textFileOuter1
+tree : da39a3ee5e6b4b0d3255bfef95601890afd80709 : directoryEmpty
+blob : 1c652ca5712f0160f74216041d95252e40c78d9f : textFileOuter3
+blob : c63fe4fa48b0e578320db7361a926310c0ca1850 : textFileOuter2
+tree : 8d3584978ffa2af44d377fae1175d31164bb9afb : directoryFull

@@ -97,7 +97,7 @@ public class IndexTester {
     }
 
     @Test
-    @DisplayName("Test if removing a blob and directory works works.")
+    @DisplayName("Test if removing a blob works.")
     public void testRemove() throws Exception{
 
         createTestFile();

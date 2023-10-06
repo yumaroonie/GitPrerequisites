@@ -13,13 +13,13 @@ import org.junit.jupiter.api.Test;
 public class CommitTester {
 
     @Test
-    void testCreateCommitHash() throws Exception {
+    void testGetCommitSHA1() throws Exception {
         File head = new File ("HEAD");
         head.delete ();
 
         Commit commit = new Commit("Chris", "My name is Chris");
 
-        String output = commit.createCommitHash();
+        String output = commit.getCommitSHA1();
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMM d, uuuu");
         LocalDateTime now = LocalDateTime.now();
@@ -55,7 +55,7 @@ public class CommitTester {
         scan2.useDelimiter("\\Z");  
         String scannedContent2 = scan2.next();     
         scan2.close ();
-        assertTrue (scannedContent2.equals (secondCommit.createCommitHash ()));
+        assertTrue (scannedContent2.equals (secondCommit.getCommitSHA1 ()));
     }
 
     @Test
@@ -96,10 +96,10 @@ public class CommitTester {
     @Test
     void testSetNextCommit() throws Exception {
         Commit commit = new Commit("Chris", "My name is Chris");
-        String oldHash = commit.createCommitHash();
+        String oldHash = commit.getCommitSHA1();
         commit.setNextCommit("next");
         
-        assertTrue("Hash doesn't change when next commit is changed", commit.createCommitHash().equals(oldHash));
+        assertTrue("Hash doesn't change when next commit is changed", commit.getCommitSHA1().equals(oldHash));
 
         Path path = Paths.get("./objects/" + oldHash);
 

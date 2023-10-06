@@ -1,3 +1,5 @@
+import java.io.File;
+import java.util.Scanner;
 
 public class GitPrereqsTester
 {
@@ -17,7 +19,13 @@ public class GitPrereqsTester
         // //Blob myBlob = new Blob ("/Users/chrisheadley/Desktop/Comp Sci/GitPrerequisites/ToBeBlobbed.txt");
         // //myBlob.blobify ("/Users/chrisheadley/Desktop/Comp Sci/GitPrerequisites/objects");
         // //System.out.println (myBlob.getSHA1String());
-
+/*
+File foobar = new File ("foobar.txt");
+        Scanner scanner = new Scanner(foobar);
+        String commitContents = scanner.useDelimiter("\\n").next();
+        scanner.close();
+        System.out.println (commitContents);
+        */
         Index myIndex = new Index ();
         myIndex.initialize (".");
         myIndex.indexAddDirectory("advancedDirectory");

@@ -1,10 +1,15 @@
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Formatter;
+import java.util.Scanner;
 
 public class Commit {
     String hashOfTree;
@@ -21,7 +26,7 @@ public class Commit {
         this.author = author;
         this.date = getDate();
         this.summary = summary;
-        String hash = createCommitHash();
+        String hash = getCommitSHA1();
         File file = new File("./objects/" + hash);
         file.createNewFile();
         FileWriter writer = new FileWriter(file);
@@ -29,6 +34,22 @@ public class Commit {
         out.print(hashOfTree + "\n" + prevHash + "\n" + nextHash + "\n" + author + "\n" + date + "\n" + summary);
         writer.close();
         out.close();
+        
+
+        //updating previous commit to link to this one
+        File head = new File ("./HEAD");
+
+        //read HEAD
+
+        if (head.exists ())//i.e. if there is a previous commit
+        {
+            Scanner scanner = new Scanner(new File("./HEAD"));
+            String headContents = scanner.useDelimiter("\\A").next();
+            scanner.close();
+        }
+        
+
+
         updateHEAD ();
     }
 
@@ -41,7 +62,7 @@ public class Commit {
         if (this.nextHash == "") {
             this.nextHash = nextCommitHash;
         }
-        String hash = createCommitHash();
+        String hash = getCommitSHA1();
         File file = new File("./objects/" + hash);
         FileWriter writer = new FileWriter(file);
         PrintWriter out = new PrintWriter(writer);
@@ -50,7 +71,7 @@ public class Commit {
         out.close();
     }
 
-    public String createCommitHash() throws Exception {
+    public String getCommitSHA1() throws Exception {
         String content = hashOfTree + "\n" + prevHash + "\n" + "" + "\n" + author + "\n" + date + "\n" + summary;
 
         return getSHA1fromString(content);
@@ -58,6 +79,37 @@ public class Commit {
 
     public String createTree() throws Exception {
         Tree tree = new Tree();
+
+        //adding each file in index
+        FileInputStream fstream = new FileInputStream("index");
+
+        // Get the object of DataInputStream
+        DataInputStream in = new DataInputStream(fstream);
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+        String strLine;
+
+        //Read File Line By Line
+        while ((strLine = br.readLine()) != null)   {
+        // Print the content on the console
+            tree.add (strLine);
+        }
+
+        //Close the input stream
+        in.close();
+
+
+        //clearing index
+        File index = new File ("index");
+        if (index.exists ())
+        {
+            index.delete ();
+        }
+        index.createNewFile ();
+
+        //adding previous tree
+        tree.add ("tree : " + prevHash);
+
         return tree.writeToFile();
     }
 
@@ -87,8 +139,24 @@ public class Commit {
         head.createNewFile();
         FileWriter writer = new FileWriter("./HEAD",false);
         PrintWriter out = new PrintWriter(writer);
-        out.print (createCommitHash ());
+        out.print (getCommitSHA1 ());
         writer.close ();
         out.close ();
     }
+
+    //Method to get Commit's Tree based on a Commit's SHA1
+    //This method will open the SHA1 of the Commit and return the hash of the Tree (it's first line)
+    public static String getTreeSHA1FromCommit (String commitSHA) throws Exception
+    {
+        File commitFile = new File (commitSHA);
+        if (!commitFile.exists ())
+        {
+            throw new Exception ("No commit exists with the given SHA.");
+        }
+        Scanner scanner = new Scanner(commitFile);
+        String commitContents = scanner.useDelimiter("\\n").next();
+        scanner.close();
+        return commitContents;
+    }
+
 }
