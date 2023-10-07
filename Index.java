@@ -79,10 +79,6 @@ public class Index
             throw new Exception ("This Blob was added, but no file exists with this path.");
         }
         nameAndEntryMap.remove (fileOrDirectoryName);
-        File file = new File(pathToObjectsString + "/" + SHAToRemove);
-        while (file.exists()) {
-            file.delete();
-        }
         updateIndex();
     }
 
