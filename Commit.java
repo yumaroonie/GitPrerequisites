@@ -160,10 +160,10 @@ public class Commit {
 
     public void addEverythingFromTree (String treeSHAString, String prefix) throws IOException
     {
-        File tree = new File (treeSHAString);
+        File tree = new File ("./objects/" + treeSHAString);
         if (tree.length () != 0)
         {
-            FileInputStream fstream = new FileInputStream(treeSHAString);
+            FileInputStream fstream = new FileInputStream("./objects/" + treeSHAString);
 
             // Get the object of DataInputStream
             DataInputStream in = new DataInputStream(fstream);
@@ -178,10 +178,15 @@ public class Commit {
             //restore file
             if (strLine.charAt (0) == 'b')
             {
-                Scanner scanner = new Scanner(new File ("./objects/" + strLine.substring (7,47)));
-                fileContents = scanner.useDelimiter("\\A").next();
-                scanner.close();
-
+                File blobFile = new File ("./objects/" + strLine.substring (7,47));
+                //delete
+                System.out.println ("./objects/" + strLine.substring (7,47));
+                Scanner scanner = new Scanner(blobFile);
+                if (blobFile.length () != 0)
+                {
+                    fileContents = scanner.useDelimiter("\\A").next();
+                    scanner.close();
+                }
                 FileWriter writer = new FileWriter(prefix + strLine.substring (50),false);
                 PrintWriter out = new PrintWriter(writer);
                 out.print (fileContents);
@@ -190,7 +195,7 @@ public class Commit {
             }
             else if (strLine.substring (6).indexOf (":") == -1)//is past tree, not directory 
             {
-                addEverythingFromTree (treeSHAString, "./");
+                addEverythingFromTree (strLine.substring (7), "./");
             }
             else if (strLine.charAt (0) == 't')//making new folder
             {
@@ -199,7 +204,7 @@ public class Commit {
                 {
                     makeSureThisFolderExists.mkdir ();
                 }  
-                addEverythingFromTree (treeSHAString, prefix + strLine.substring (50) + "/");
+                addEverythingFromTree (strLine.substring (7, 47), strLine.substring (50) + "/");
             }
             
         }

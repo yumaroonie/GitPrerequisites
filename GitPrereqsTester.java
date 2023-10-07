@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -58,48 +59,60 @@ Index i = new Index ();
 //i.initialize (".");
 //i.editExistingSavedFile("mashallah.txt");
 //i.deleteSavedFile ("hehe");
-Index i = new Index ();
-i.initialize (".");
+File head = new File ("./HEAD");
+        head.delete ();
 
-//first commit
-File file1 = new File ("file1.txt");
-file1.createNewFile ();
-FileWriter writer = new FileWriter(file1,false);
-PrintWriter print = new PrintWriter(writer);
-print.print ("this is my first file!");
-writer.close ();
-print.close ();
-
-File file2 = new File ("file2.txt");
-file2.createNewFile ();
-FileWriter writer2 = new FileWriter(file2,false);
-PrintWriter print2 = new PrintWriter(writer2);
-print2.print ("this is my second file!\nisn't it great?");
-writer2.close ();
-print2.close ();
-
-i.indexAddFile ("file1.txt");
-i.indexAddFile ("file2.txt");
-
-Commit myCommit = new Commit ("Chris", "justCommittedTwoFiles");
-
-//editing second file
-FileWriter editWriter = new FileWriter(file2,false);
-PrintWriter editPrint = new PrintWriter(editWriter);
-editPrint.print ("this is my edited second file!\ntell me it isn't wonderful!");
-editWriter.close ();
-editPrint.close ();
-
-i.editExistingSavedFile ("file2.txt");
-
-Scanner scanner = new Scanner(new File ("index"));
-        String commitContents = scanner.useDelimiter("\\A").next();
-        scanner.close();
-        System.out.println (commitContents);
-
-Commit editCommit1 = new Commit ("Chris", "just edited second file");
-        //Commit myCommit = new Commit ("chris2", "iswaytooepic");
+        Index i = new Index ();
+        i.initialize(".");
         
+        //making test directories
+        File advancedDirectory = new File ("advancedDirectory");
+        advancedDirectory.mkdir();
+        
+        File directoryEmpty = new File ("advancedDirectory/directoryEmpty");
+        directoryEmpty.mkdir();
+        File directoryFull = new File ("advancedDirectory/directoryFull");
+        directoryFull.mkdir();
+        
+        //making test files and directory
+        File firstFile = new File ("./advancedDirectory/textFileOuter1");
+        File secondFile = new File ("./advancedDirectory/textFileOuter2");
+        File thirdFile = new File ("./advancedDirectory/textFileOuter3");
+        File fourthFile = new File ("./advancedDirectory/textFileInner");
+        firstFile.createNewFile ();
+        secondFile.createNewFile ();
+        thirdFile.createNewFile ();
+        fourthFile.createNewFile ();
+
+        i.indexAddDirectory("advancedDirectory");
+/*
+        i.indexAddFile ("./advancedDirectory/textFileOuter1");
+        i.indexAddFile ("./advancedDirectory/textFileOuter1");
+        i.indexAddFile ("./advancedDirectory/textFileOuter1");
+        i.indexAddFile ("./advancedDirectory/directoryFull/textFileInner");
+*/
+        Commit myCommit = new Commit ("Chris", "correct commit for reversion");
+
+        /* 
+        firstFile.delete ();
+        secondFile.delete ();
+        thirdFile.delete ();
+        fourthFile.delete ();
+        directoryEmpty.delete ();
+        directoryFull.delete ();
+        advancedDirectory.delete ();
+
+        Commit secondCommit = new Commit (myCommit.getCommitSHA1(), "Chris", "ew i messed up with this commit");
+
+//Scanner scanner = new Scanner(new File ("./objects/" + Commit.getTreeSHA1FromCommit(myCommit.getCommitSHA1 ())));
+  //      String commitContents = scanner.useDelimiter("\\A").next();
+    //    scanner.close()
+
+ //       System.out.println (commitContents);
+
+        secondCommit.checkout (myCommit.getCommitSHA1());
+        //Commit myCommit = new Commit ("chris2", "iswaytooepic");
+        */
         //Tree myTree = new Tree ();
         //myTree.addDirectory ("advancedDirectory");
         

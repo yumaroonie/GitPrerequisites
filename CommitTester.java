@@ -26,6 +26,13 @@ public class CommitTester {
         File head = new File ("HEAD");
         index.delete ();
         index.createNewFile ();
+        objects.mkdir ();
+        File[] contents = objects.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                f.delete ();
+            }
+        }
         objects.delete ();
         objects.mkdir ();
         head.delete ();
@@ -36,9 +43,15 @@ public class CommitTester {
         File index = new File ("index");
         File objects = new File ("objects");
         File head = new File ("HEAD");
-        index.delete ();
-        index.createNewFile ();
+        objects.mkdir ();
+        File[] contents = objects.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                f.delete ();
+            }
+        }
         objects.delete ();
+        index.createNewFile ();
         head.delete ();
     }
 
@@ -581,7 +594,85 @@ public class CommitTester {
         file4.delete ();
     }
 
-    public String getLineOfFile ( String filePath, int lineNum) throws IOException
+    @Test
+    void testCommitTraversal () throws Exception {
+        File head = new File ("./HEAD");
+        head.delete ();
+
+        Index i = new Index ();
+        i.initialize(".");
+        
+        Commit firstCommit = new Commit ("Chris", "made a first commit");
+        Commit secondCommit = new Commit (firstCommit.getCommitSHA1 (), "Chris", "made a second commit");
+        Commit thirdCommit = new Commit (secondCommit.getCommitSHA1 (), "Chris", "made a third commit");
+        Commit fourthCommit = new Commit (thirdCommit.getCommitSHA1 (), "Chris", "made a fourth commit");
+        Commit fifthCommit = new Commit (fourthCommit.getCommitSHA1 (), "Chris", "made a fifth commit");
+
+        //checks to see if fifth commit sha is equal to the one obtained through traversing 5 commits
+        assertEquals (fifthCommit.getCommitSHA1 (), getNextCommitSHA("./objects/" + getNextCommitSHA ("./objects/" + getNextCommitSHA("./objects/" + getNextCommitSHA ("./objects/" + firstCommit.getCommitSHA1 ())))));
+    }
+
+    @Test
+    void testCheckout () throws Exception {
+        File head = new File ("./HEAD");
+        head.delete ();
+
+        Index i = new Index ();
+        i.initialize(".");
+        
+        //making test directories
+        File advancedDirectory = new File ("advancedDirectory");
+        advancedDirectory.mkdir();
+        File directoryEmpty = new File ("advancedDirectory/directoryEmpty");
+        directoryEmpty.mkdir();
+        File directoryFull = new File ("advancedDirectory/directoryFull");
+        directoryFull.mkdir();
+        //making test files
+        makeTextFile("./advancedDirectory/textFileOuter1", "fileOuter1");
+        makeTextFile("./advancedDirectory/textFileOuter2", "fileOuter2");
+        makeTextFile("./advancedDirectory/textFileOuter3", "fileOuter3");
+        makeTextFile("./advancedDirectory/directoryFull/textFileInner", "this file is inner");
+
+        i.indexAddDirectory("./advancedDirectory");
+
+        Commit myCommit = new Commit ("Chris", "correct commit for reversion");
+
+        File firstFile = new File ("./advancedDirectory/textFileOuter1");
+        File secondFile = new File ("./advancedDirectory/textFileOuter2");
+        File thirdFile = new File ("./advancedDirectory/textFileOuter3");
+        File fourthFile = new File ("./advancedDirectory/directoryFull/textFileInner");
+        firstFile.delete ();
+        secondFile.delete ();
+        thirdFile.delete ();
+        fourthFile.delete ();
+        directoryEmpty.delete ();
+        directoryFull.delete ();
+        advancedDirectory.delete ();
+
+        Commit secondCommit = new Commit (myCommit.getCommitSHA1(), "Chris", "ew i messed up with this commit");
+
+        secondCommit.checkout (myCommit.getCommitSHA1());
+
+        
+    }
+
+    private void makeTextFile (String path, String contents) throws IOException
+    {
+        File theFile = new File (path);
+        theFile.createNewFile ();
+        FileWriter writer = new FileWriter(path,false);
+        PrintWriter out = new PrintWriter(writer);
+        out.print (contents);
+        writer.close ();
+        out.close ();
+    }
+
+    public String getNextCommitSHA (String thisCommitPath) throws IOException
+    {
+        return getLineOfFile (thisCommitPath, 3);
+    }
+
+    public String getLineOfFile (String filePath, int lineNum) throws IOException
     {
         Path path = Paths.get(filePath);
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);

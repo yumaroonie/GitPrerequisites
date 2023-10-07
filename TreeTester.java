@@ -27,19 +27,36 @@ public class TreeTester {
     static void setUpBeforeClass() throws Exception {
         File index = new File ("index");
         File objects = new File ("objects");
+        File head = new File ("HEAD");
         index.delete ();
         index.createNewFile ();
+        objects.mkdir ();
+        File[] contents = objects.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                f.delete ();
+            }
+        }
         objects.delete ();
         objects.mkdir ();
+        head.delete ();
     }
     @Test
     @AfterAll
     static void tearDownAfterClass() throws Exception {
         File index = new File ("index");
         File objects = new File ("objects");
-        index.delete ();
-        index.createNewFile ();
+        File head = new File ("HEAD");
+        objects.mkdir ();
+        File[] contents = objects.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                f.delete ();
+            }
+        }
         objects.delete ();
+        index.createNewFile ();
+        head.delete ();
     }
 
     @Test
