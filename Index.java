@@ -43,6 +43,7 @@ public class Index
         {
             throw new Exception ("Project must be initialized before adding a Blob");
         }
+        clearMapIfFileCleared ();
         //creating Blob, updating hash map
         Blob addBlob = new Blob (pathName + "/" + fileName, pathName);
         nameAndEntryMap.put (fileName,new IndexEntry ("blob", addBlob.getSHA1String ()));
@@ -55,6 +56,7 @@ public class Index
         {
             throw new Exception ("Project must be initialized before adding a Directory");
         }
+        clearMapIfFileCleared ();
         Tree addTree = new Tree ();
         addTree.addDirectory (folderName);
         nameAndEntryMap.put(folderName,new IndexEntry ("tree",addTree.getUltimateTreeSHA1String ()));
@@ -71,6 +73,7 @@ public class Index
         {
             throw new Exception ("Cannot remove a Blob that was never added");
         }
+        clearMapIfFileCleared ();
         Blob removeBlob = new Blob (pathName + "/" + fileOrDirectoryName, pathName);
         String SHAToRemove = removeBlob.getSHA1String();
         Path fileNamePath = Paths.get (pathToObjectsString + "/" + SHAToRemove);
@@ -88,6 +91,7 @@ public class Index
         {
             throw new Exception ("Project must be initialized before deleting a saved file");
         }
+        clearMapIfFileCleared ();
         nameAndEntryMap.put (fileToDelete, new IndexEntry ("*deleted*", ""));
         updateIndex ();
     }
@@ -98,6 +102,9 @@ public class Index
         {
             throw new Exception ("Project must be initialized before editing a saved file");
         }
+        clearMapIfFileCleared ();
+        Blob addBlob = new Blob ("./" + fileToEdit, "./");
+        nameAndEntryMap.remove (fileToEdit);
         nameAndEntryMap.put (fileToEdit, new IndexEntry ("*edited*", ""));
         updateIndex ();
     }
@@ -115,7 +122,7 @@ public class Index
                 {
                     out.print (nameAndEntryMap.get (key).getType () + " : " + nameAndEntryMap.get (key).getSHA1() + " : " + key);
                 }
-                else
+                else//i.e. if editing or deleting
                 {
                     out.print (nameAndEntryMap.get (key).getType () + " " + key);
                 }
@@ -127,7 +134,7 @@ public class Index
                 {
                     out.print ("\n" + nameAndEntryMap.get (key).getType () + " : " + nameAndEntryMap.get (key).getSHA1() + " : " + key);
                 }
-                else
+                else//i.e. if editing or deleting
                 {
                     out.print ("\n" + nameAndEntryMap.get (key).getType () + " " + key);
                 }
@@ -135,6 +142,15 @@ public class Index
         }
         writer.close ();
         out.close ();
+    }
+
+    public void clearMapIfFileCleared ()
+    {
+        File index = new File ("index");
+        if (index.length () == 0)
+        {
+            nameAndEntryMap.clear ();
+        }
     }
 
     public HashMap <String, IndexEntry> getNameAndEntryMap ()

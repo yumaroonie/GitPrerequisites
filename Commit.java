@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -103,6 +102,8 @@ public class Commit {
     public String createTree() throws Exception {
         Tree tree = new Tree();
 
+            Boolean editingOrDeleting = false;
+
         //adding each file in index
         File index = new File ("index");
         if (index.exists () && index.length () != 0)
@@ -118,7 +119,15 @@ public class Commit {
             //Read File Line By Line
             while ((strLine = br.readLine()) != null)   {
             // Print the content on the console
-                tree.add (strLine);
+                if (strLine.charAt (0) == 'b' || strLine.charAt (0) == 't')
+                {
+                    tree.add (strLine);
+                }
+                else
+                {
+                    tree.addEditedOrDeleted (strLine, prevHash);
+                    editingOrDeleting = true;
+                }
         }
 
         //Close the input stream
@@ -133,7 +142,7 @@ public class Commit {
         index.createNewFile ();
 
         //adding previous tree
-        if (!prevHash.equals (""))
+        if (!prevHash.equals ("") && !editingOrDeleting)
         {
             tree.add ("tree : " + getTreeSHA1FromCommit(prevHash));
         }
@@ -143,7 +152,7 @@ public class Commit {
 
     public void checkout (String commitSHA1) throws IOException
     {
-        Scanner scanner = new Scanner("./objects/" + commitSHA1);
+        Scanner scanner = new Scanner(new File ("./objects/" + commitSHA1));
         String commitFirstLine = scanner.useDelimiter("\\n").next();
         scanner.close();
         addEverythingFromTree (commitFirstLine, "./");
@@ -169,7 +178,7 @@ public class Commit {
             //restore file
             if (strLine.charAt (0) == 'b')
             {
-                Scanner scanner = new Scanner("./objects/" + strLine.substring (7,47));
+                Scanner scanner = new Scanner(new File ("./objects/" + strLine.substring (7,47)));
                 fileContents = scanner.useDelimiter("\\A").next();
                 scanner.close();
 
@@ -179,7 +188,7 @@ public class Commit {
                 writer.close ();
                 out.close ();
             }
-            else if (strLine.substring (7).indexOf (":") == -1)//is past tree, not directory 
+            else if (strLine.substring (6).indexOf (":") == -1)//is past tree, not directory 
             {
                 addEverythingFromTree (treeSHAString, "./");
             }

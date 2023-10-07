@@ -25,9 +25,6 @@ public class Tree {
     }
 
     public void add(String components) throws Exception {
-
-        if (components.charAt (0) == 'b' || components.charAt (0) == 't')
-        {
             if (!entries.toString().contains(components)) {
                 if (entries.isEmpty()) {
                     entries.append(components);
@@ -36,20 +33,24 @@ public class Tree {
                     entries.append(components);
                 }
             }
-        }
-        else if (components.charAt (1) == 'd')
+    }
+
+    public void addEditedOrDeleted (String components, String shaOfPrevCommit) throws Exception
+    {
+        if (components.charAt (1) == 'd')
         {//if deleting
-            searchForFileNameInTree (components.substring (10), writeToFile ());
+            searchForFileNameInTree (components.substring (10), Commit.getTreeSHA1FromCommit (shaOfPrevCommit));
         }
         else
         {//if editing
             //removing old
-            searchForFileNameInTree (components.substring (9), writeToFile ());
+            searchForFileNameInTree (components.substring (9), Commit.getTreeSHA1FromCommit (shaOfPrevCommit));
             //adding new
-            Scanner scanner = new Scanner("./objects/" + components.substring (9));
-            String editedContents = "./objects/" + scanner.useDelimiter("\\A").next();
+            Scanner scanner = new Scanner(new File (components.substring (9)));
+            String editedContents = scanner.useDelimiter("\\A").next();
             scanner.close();
-            add ("blob : " + getSHA1fromString (editedContents) + components.substring (9));
+            //adding new
+            add ("blob : " + getSHA1fromString (editedContents) + " : " + components.substring (9));
         }
     }
 
@@ -154,7 +155,7 @@ public class Tree {
         if (currentTree.length () != 0)
         {
         Scanner scanner = new Scanner(currentTree);
-        String currentTreeString = "./objects/" + scanner.useDelimiter("\\A").next();
+        String currentTreeString = scanner.useDelimiter("\\A").next();
         scanner.close();
             if (currentTreeString.contains (str))
             {
@@ -189,8 +190,8 @@ public class Tree {
 
                 //Read File Line By Line
                 while ((strLine = br.readLine()) != null)   {
-            
-                    if (strLine.contains ("tree"))
+                    //if statement makes sure it is another embedded tree not added directory
+                    if (strLine.contains ("tree") && strLine.substring (6).indexOf (":") == -1)
                     {
                         searchForFileNameInTree (str, strLine.substring (7,47));
                     }
