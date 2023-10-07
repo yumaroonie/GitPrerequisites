@@ -2,7 +2,9 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -103,7 +105,7 @@ public class Commit {
 
         //adding each file in index
         File index = new File ("index");
-        if (!index.exists () || index.length () != 0)
+        if (index.exists () && index.length () != 0)
         {
             FileInputStream fstream = new FileInputStream("index");
 
@@ -137,6 +139,65 @@ public class Commit {
         }
 
         return tree.writeToFile();
+    }
+
+    public void checkout (String commitSHA1) throws IOException
+    {
+        Scanner scanner = new Scanner("./objects/" + commitSHA1);
+        String commitFirstLine = scanner.useDelimiter("\\n").next();
+        scanner.close();
+        addEverythingFromTree (commitFirstLine, "./");
+    }
+
+    public void addEverythingFromTree (String treeSHAString, String prefix) throws IOException
+    {
+        File tree = new File (treeSHAString);
+        if (tree.length () != 0)
+        {
+            FileInputStream fstream = new FileInputStream(treeSHAString);
+
+            // Get the object of DataInputStream
+            DataInputStream in = new DataInputStream(fstream);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+            String strLine;
+
+            //Read File Line By Line
+            String fileContents = "";
+            while ((strLine = br.readLine()) != null)   {
+            // Do epic stuff
+            //restore file
+            if (strLine.charAt (0) == 'b')
+            {
+                Scanner scanner = new Scanner("./objects/" + strLine.substring (7,47));
+                fileContents = scanner.useDelimiter("\\A").next();
+                scanner.close();
+
+                FileWriter writer = new FileWriter(prefix + strLine.substring (50),false);
+                PrintWriter out = new PrintWriter(writer);
+                out.print (fileContents);
+                writer.close ();
+                out.close ();
+            }
+            else if (strLine.substring (7).indexOf (":") == -1)//is past tree, not directory 
+            {
+                addEverythingFromTree (treeSHAString, "./");
+            }
+            else if (strLine.charAt (0) == 't')//making new folder
+            {
+                File makeSureThisFolderExists = new File (prefix + strLine.substring (50));//directory addition
+                if (!makeSureThisFolderExists.exists ())
+                {
+                    makeSureThisFolderExists.mkdir ();
+                }  
+                addEverythingFromTree (treeSHAString, prefix + strLine.substring (50) + "/");
+            }
+            
+        }
+
+        //Close the input stream
+        in.close();
+    }
     }
 
     public String getDate() {

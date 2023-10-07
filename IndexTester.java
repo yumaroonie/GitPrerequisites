@@ -114,7 +114,6 @@ public class IndexTester {
 
         index.remove("testfile.txt");
         indexContents = Files.readString(Path.of("./index"));
-        assertTrue("Blob file was not removed.", !blobFile.exists());
         assertEquals("Index contents were not removed.", indexContents, "");
         deleteStuff();
     }

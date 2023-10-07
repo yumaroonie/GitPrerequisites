@@ -433,7 +433,7 @@ public class CommitTester {
     }
 
     @Test
-    void fourCommitTest () throws Exception {
+    void editDeleteTest () throws Exception {
         Index i = new Index ();
         i.initialize (".");
 
