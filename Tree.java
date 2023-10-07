@@ -43,8 +43,13 @@ public class Tree {
         }
         else
         {//if editing
-            String fileName = components.substring (9);
-            
+            //removing old
+            searchForFileNameInTree (components.substring (9), writeToFile ());
+            //adding new
+            Scanner scanner = new Scanner("./objects/" + components.substring (9));
+            String editedContents = "./objects/" + scanner.useDelimiter("\\A").next();
+            scanner.close();
+            add ("blob : " + getSHA1fromString (editedContents) + components.substring (9));
         }
     }
 
