@@ -653,7 +653,34 @@ public class CommitTester {
 
         secondCommit.checkout (myCommit.getCommitSHA1());
 
-        
+        //checking everything is correct now
+        assertTrue (firstFile.exists ());
+        assertTrue (secondFile.exists ());
+        assertTrue (thirdFile.exists ());
+        assertTrue (fourthFile.exists ());
+        assertTrue (directoryEmpty.exists ());
+        assertTrue (directoryFull.exists ());
+        assertTrue (advancedDirectory.exists ());
+        Scanner scan1 = new Scanner(firstFile);
+        scan1.useDelimiter("\\A");  
+        String scannedContent1 = scan1.next();     
+        scan1.close ();
+        Scanner scan2 = new Scanner(secondFile);
+        scan2.useDelimiter("\\A");  
+        String scannedContent2 = scan2.next();     
+        scan2.close ();
+        Scanner scan3 = new Scanner(thirdFile);
+        scan3.useDelimiter("\\A");  
+        String scannedContent3 = scan3.next();     
+        scan3.close ();
+        Scanner scan4 = new Scanner(fourthFile);
+        scan4.useDelimiter("\\A");  
+        String scannedContent4 = scan4.next();     
+        scan4.close ();
+        assertEquals (scannedContent1,"fileOuter1");
+        assertEquals (scannedContent2,"fileOuter2");
+        assertEquals (scannedContent3,"fileOuter3");
+        assertEquals (scannedContent4,"this file is inner");
     }
 
     private void makeTextFile (String path, String contents) throws IOException

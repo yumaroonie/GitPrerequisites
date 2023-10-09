@@ -155,7 +155,7 @@ public class Commit {
         Scanner scanner = new Scanner(new File ("./objects/" + commitSHA1));
         String commitFirstLine = scanner.useDelimiter("\\n").next();
         scanner.close();
-        addEverythingFromTree (commitFirstLine, "./");
+        addEverythingFromTree (commitFirstLine, "");
     }
 
     public void addEverythingFromTree (String treeSHAString, String prefix) throws IOException
@@ -172,46 +172,60 @@ public class Commit {
             String strLine;
 
             //Read File Line By Line
-            String fileContents = "";
             while ((strLine = br.readLine()) != null)   {
             // Do epic stuff
             //restore file
-            if (strLine.charAt (0) == 'b')
-            {
-                File blobFile = new File ("./objects/" + strLine.substring (7,47));
-                //delete
-                System.out.println ("./objects/" + strLine.substring (7,47));
-                Scanner scanner = new Scanner(blobFile);
-                if (blobFile.length () != 0)
+                if (strLine.charAt (0) == 't' && strLine.substring (6).indexOf (":") != -1)//making new folder
                 {
-                    fileContents = scanner.useDelimiter("\\A").next();
-                    scanner.close();
+                    File makeSureThisFolderExists = new File (prefix + strLine.substring (50));//directory addition
+                    if (!makeSureThisFolderExists.exists ())
+                    {
+                        makeSureThisFolderExists.mkdir ();
+                    }  
+                    addEverythingFromTree (strLine.substring (7, 47), prefix + strLine.substring (50) + "/");
                 }
-                FileWriter writer = new FileWriter(prefix + strLine.substring (50),false);
-                PrintWriter out = new PrintWriter(writer);
-                out.print (fileContents);
-                writer.close ();
-                out.close ();
             }
-            else if (strLine.substring (6).indexOf (":") == -1)//is past tree, not directory 
-            {
-                addEverythingFromTree (strLine.substring (7), "./");
-            }
-            else if (strLine.charAt (0) == 't')//making new folder
-            {
-                File makeSureThisFolderExists = new File (prefix + strLine.substring (50));//directory addition
-                if (!makeSureThisFolderExists.exists ())
+            in.close ();
+            FileInputStream fstream2 = new FileInputStream("./objects/" + treeSHAString);
+
+            // Get the object of DataInputStream
+            DataInputStream in2 = new DataInputStream(fstream2);
+            BufferedReader br2 = new BufferedReader(new InputStreamReader(in2));
+
+            String strLine2;
+
+            //Read File Line By Line
+            String fileContents = "";
+            while ((strLine2 = br2.readLine()) != null)   {
+            // Do epic stuff
+            //restore file
+            fileContents = "";
+                if (strLine2.charAt (0) == 'b')
                 {
-                    makeSureThisFolderExists.mkdir ();
-                }  
-                addEverythingFromTree (strLine.substring (7, 47), strLine.substring (50) + "/");
+                    File blobFile = new File ("./objects/" + strLine2.substring (7,47));
+                    Scanner scanner = new Scanner(blobFile);
+                    if (blobFile.length () != 0)
+                    {
+                        fileContents = scanner.useDelimiter("\\A").next();
+                        scanner.close();
+                    }
+                    File newFile = new File (prefix + strLine2.substring (50));
+                    newFile.createNewFile();
+                    FileWriter writer = new FileWriter(prefix + strLine2.substring (50),false);
+                    PrintWriter out = new PrintWriter(writer);
+                    out.print (fileContents);
+                    writer.close ();
+                    out.close ();
+                }
+                else if (strLine2.substring (6).indexOf (":") == -1)//is past tree, not directory 
+                {
+                    addEverythingFromTree (strLine2.substring (7), "./");
+                }
             }
+            in2.close ();
+
             
         }
-
-        //Close the input stream
-        in.close();
-    }
     }
 
     public String getDate() {

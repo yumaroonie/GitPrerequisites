@@ -1,8 +1,6 @@
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Scanner;
 
 public class GitPrereqsTester
 {
@@ -64,7 +62,7 @@ File head = new File ("./HEAD");
 
         Index i = new Index ();
         i.initialize(".");
-        
+        /*
         //making test directories
         File advancedDirectory = new File ("advancedDirectory");
         advancedDirectory.mkdir();
@@ -78,30 +76,60 @@ File head = new File ("./HEAD");
         File firstFile = new File ("./advancedDirectory/textFileOuter1");
         File secondFile = new File ("./advancedDirectory/textFileOuter2");
         File thirdFile = new File ("./advancedDirectory/textFileOuter3");
-        File fourthFile = new File ("./advancedDirectory/textFileInner");
+        File fourthFile = new File ("./advancedDirectory/directoryFull/textFileInner");
+        firstFile.createNewFile ();
+        secondFile.createNewFile ();
+        thirdFile.createNewFile ();
+        fourthFile.createNewFile ();
+        */
+
+        //making test files and directory
+        File firstFile = new File ("textFileOuter1");
+        File secondFile = new File ("textFileOuter2");
+        File thirdFile = new File ("textFileOuter3");
+        File fourthFile = new File ("./textFileInner");
         firstFile.createNewFile ();
         secondFile.createNewFile ();
         thirdFile.createNewFile ();
         fourthFile.createNewFile ();
 
-        i.indexAddDirectory("advancedDirectory");
+        FileWriter writer = new FileWriter("textFileOuter3",false);
+        PrintWriter out = new PrintWriter(writer);
+        out.print ("this is in file 3");
+        writer.close ();
+        out.close ();
+
+        FileWriter writer2 = new FileWriter("./textFileInner",false);
+        PrintWriter out2 = new PrintWriter(writer2);
+        out2.print ("this is in the inner file in the folder in the advanced directory");
+        writer2.close ();
+        out2.close ();
+
+       // i.indexAddDirectory("advancedDirectory");
 /*
         i.indexAddFile ("./advancedDirectory/textFileOuter1");
-        i.indexAddFile ("./advancedDirectory/textFileOuter1");
-        i.indexAddFile ("./advancedDirectory/textFileOuter1");
+        i.indexAddFile ("./advancedDirectory/textFileOuter2");
+        i.indexAddFile ("./advancedDirectory/textFileOuter3");
         i.indexAddFile ("./advancedDirectory/directoryFull/textFileInner");
-*/
+
+        */
+
+        i.indexAddFile ("textFileOuter1");
+        i.indexAddFile ("textFileOuter2");
+        i.indexAddFile ("textFileOuter3");
+        i.indexAddFile ("./textFileInner");
+
         Commit myCommit = new Commit ("Chris", "correct commit for reversion");
 
-        /* 
         firstFile.delete ();
         secondFile.delete ();
         thirdFile.delete ();
         fourthFile.delete ();
+        /*
         directoryEmpty.delete ();
         directoryFull.delete ();
         advancedDirectory.delete ();
-
+*/
         Commit secondCommit = new Commit (myCommit.getCommitSHA1(), "Chris", "ew i messed up with this commit");
 
 //Scanner scanner = new Scanner(new File ("./objects/" + Commit.getTreeSHA1FromCommit(myCommit.getCommitSHA1 ())));
@@ -112,7 +140,7 @@ File head = new File ("./HEAD");
 
         secondCommit.checkout (myCommit.getCommitSHA1());
         //Commit myCommit = new Commit ("chris2", "iswaytooepic");
-        */
+        
         //Tree myTree = new Tree ();
         //myTree.addDirectory ("advancedDirectory");
         

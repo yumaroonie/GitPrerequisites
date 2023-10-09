@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 public class ManualCommitTester {
@@ -31,7 +30,7 @@ public class ManualCommitTester {
         i.indexAddFile ("file1.txt");
         i.indexAddFile ("file2.txt");
 
-        Commit myCommit = new Commit ("Chris", "justCommittedTwoFiles");
+        //Commit myCommit = new Commit ("Chris", "justCommittedTwoFiles");
         /*
 
         //second commit

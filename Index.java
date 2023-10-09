@@ -96,6 +96,7 @@ public class Index
         updateIndex ();
     }
 
+    @SuppressWarnings(value = {"unused"})
     public void editExistingSavedFile (String fileToEdit) throws Exception
     {
         if (!initialized)
