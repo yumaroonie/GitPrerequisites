@@ -653,27 +653,35 @@ public class CommitTester {
 
         secondCommit.checkout (myCommit.getCommitSHA1());
 
+        File firstFileForTesting = new File ("./checkoutFolder/advancedDirectory/textFileOuter1");
+        File secondFileForTesting = new File ("./checkoutFolder/advancedDirectory/textFileOuter2");
+        File thirdFileForTesting = new File ("./checkoutFolder/advancedDirectory/textFileOuter3");
+        File fourthFileForTesting = new File ("./checkoutFolder/advancedDirectory/directoryFull/textFileInner");
+        File directoryEmptyForTesting = new File ("./checkoutFolder/advancedDirectory/directoryEmpty");
+        File directoryFullForTesting = new File ("./checkoutFolder/advancedDirectory/directoryFull");
+        File advancedDirectoryForTesting = new File ("./checkoutFolder/advancedDirectory");
+
         //checking everything is correct now
-        assertTrue (firstFile.exists ());
-        assertTrue (secondFile.exists ());
-        assertTrue (thirdFile.exists ());
-        assertTrue (fourthFile.exists ());
-        assertTrue (directoryEmpty.exists ());
-        assertTrue (directoryFull.exists ());
-        assertTrue (advancedDirectory.exists ());
-        Scanner scan1 = new Scanner(firstFile);
+        assertTrue (firstFileForTesting.exists ());
+        assertTrue (secondFileForTesting.exists ());
+        assertTrue (thirdFileForTesting.exists ());
+        assertTrue (fourthFileForTesting.exists ());
+        assertTrue (directoryEmptyForTesting.exists ());
+        assertTrue (directoryFullForTesting.exists ());
+        assertTrue (advancedDirectoryForTesting.exists ());
+        Scanner scan1 = new Scanner(firstFileForTesting);
         scan1.useDelimiter("\\A");  
         String scannedContent1 = scan1.next();     
         scan1.close ();
-        Scanner scan2 = new Scanner(secondFile);
+        Scanner scan2 = new Scanner(secondFileForTesting);
         scan2.useDelimiter("\\A");  
         String scannedContent2 = scan2.next();     
         scan2.close ();
-        Scanner scan3 = new Scanner(thirdFile);
+        Scanner scan3 = new Scanner(thirdFileForTesting);
         scan3.useDelimiter("\\A");  
         String scannedContent3 = scan3.next();     
         scan3.close ();
-        Scanner scan4 = new Scanner(fourthFile);
+        Scanner scan4 = new Scanner(fourthFileForTesting);
         scan4.useDelimiter("\\A");  
         String scannedContent4 = scan4.next();     
         scan4.close ();
@@ -681,6 +689,16 @@ public class CommitTester {
         assertEquals (scannedContent2,"fileOuter2");
         assertEquals (scannedContent3,"fileOuter3");
         assertEquals (scannedContent4,"this file is inner");
+
+        //cleaning up
+        firstFileForTesting.delete ();
+        secondFileForTesting.delete ();
+        thirdFileForTesting.delete ();
+        fourthFileForTesting.delete ();
+        directoryEmptyForTesting.delete ();
+        directoryFullForTesting.delete ();
+        advancedDirectoryForTesting.delete ();
+
     }
 
     private void makeTextFile (String path, String contents) throws IOException

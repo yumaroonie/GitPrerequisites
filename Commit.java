@@ -155,6 +155,8 @@ public class Commit {
         Scanner scanner = new Scanner(new File ("./objects/" + commitSHA1));
         String commitFirstLine = scanner.useDelimiter("\\n").next();
         scanner.close();
+        File checkoutFolder = new File ("./checkoutFolder");
+        checkoutFolder.mkdir();
         addEverythingFromTree (commitFirstLine, "");
     }
 
@@ -177,7 +179,7 @@ public class Commit {
             //restore file
                 if (strLine.charAt (0) == 't' && strLine.substring (6).indexOf (":") != -1)//making new folder
                 {
-                    File makeSureThisFolderExists = new File (prefix + strLine.substring (50));//directory addition
+                    File makeSureThisFolderExists = new File ("./checkoutFolder/" + prefix + strLine.substring (50));//directory addition
                     if (!makeSureThisFolderExists.exists ())
                     {
                         makeSureThisFolderExists.mkdir ();
@@ -209,9 +211,9 @@ public class Commit {
                         fileContents = scanner.useDelimiter("\\A").next();
                         scanner.close();
                     }
-                    File newFile = new File (prefix + strLine2.substring (50));
-                    newFile.createNewFile();
-                    FileWriter writer = new FileWriter(prefix + strLine2.substring (50),false);
+                    File newFile = new File ("./checkoutFolder/" + prefix + strLine2.substring (50));
+                    newFile.createNewFile ();
+                    FileWriter writer = new FileWriter("./checkoutFolder/" + prefix + strLine2.substring (50),false);
                     PrintWriter out = new PrintWriter(writer);
                     out.print (fileContents);
                     writer.close ();
