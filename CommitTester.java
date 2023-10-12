@@ -77,9 +77,6 @@ public class CommitTester {
         String compare = hash + "\n" + "" + "\n" + "" + "\n" + author + "\n" + date + "\n" + summary;
         compare = commit.getSHA1fromString(compare);
 
-        System.out.println(output);
-        System.out.println(compare);
-
         assertTrue("The Correct Hash is Returned", compare.equals(output));
         
         //test HEAD creation functionality
